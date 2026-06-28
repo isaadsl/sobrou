@@ -1,66 +1,38 @@
 import { Router } from 'express';
+import fetch from 'node-fetch';
 
 const router = Router();
+const GROQ_API_KEY = process.env.GROQ_API_KEY; // coloque sua chave no .env
 
-const MODELO = 'claude-sonnet-4-6';
-
-function montarPromptSistema(contexto, perfilComportamental) {
-  const descricoesPerfil = {
-    economico: 'A pessoa tem um perfil ECONÔMICO: costuma guardar boa parte do que recebe e paga as contas em dia. Reforce esses bons hábitos e incentive metas mais ambiciosas quando fizer sentido.',
-    equilibrado: 'A pessoa tem um perfil EQUILIBRADO: gastos e receitas relativamente parelhos. Ajude a encontrar pequenos ajustes que liberem mais espaço de economia.',
-    gastador: 'A pessoa tem um perfil GASTADOR: os gastos tendem a consumir quase toda (ou mais que) a renda. Seja gentil mas direto ao apontar riscos, e sugira cortes ou priorizações concretas.',
-  };
-
-  return `Você é o Assistente Financeiro do app "Sobrou" — um app de planejamento financeiro pessoal brasileiro.
-
-Seu papel é responder perguntas financeiras do usuário de forma curta, direta, prática e em português do Brasil, usando SEMPRE os dados financeiros reais fornecidos abaixo. Nunca invente números — baseie-se exclusivamente no contexto financeiro fornecido.
-
-${descricoesPerfil[perfilComportamental] || descricoesPerfil.equilibrado}
-
-CONTEXTO FINANCEIRO ATUAL DO USUÁRIO:
-${JSON.stringify(contexto, null, 2)}
-
-Diretrizes de resposta:
-- Seja objetivo: 2 a 5 frases na maioria dos casos.
-- Use valores em reais formatados (ex: R$ 1.200,00).
-- Se a pergunta envolver uma simulação de compra, calcule o saldo antes/depois explicitamente.
-- Se não houver dados suficientes para responder com precisão, diga isso claramente em vez de chutar.
-- Nunca dê conselhos de investimento específicos (ações, criptomoedas etc.) — foque em orçamento, prioridades e metas.
-- Não use markdown pesado (sem títulos ##); pode usar **negrito** pontual e listas curtas quando ajudar a clareza.`;
-}
-
-// POST /api/assistente/perguntar
 router.post('/perguntar', async (req, res) => {
-  const { pergunta, contexto, perfilComportamental, historico } = req.body;
-
-  if (!pergunta || !contexto) {
-    return res.status(400).json({ erro: 'Campos obrigatórios: pergunta, contexto' });
-  }
-
-  const apiKey = process.env.ANTHROPIC_API_KEY;
-
-  if (!apiKey) {
-    return res.status(503).json({
-      erro: 'IA ainda não configurada. Defina ANTHROPIC_API_KEY no arquivo backend/.env para ativar o Assistente Financeiro.',
-    });
-  }
+  const { pergunta, contexto, perfilComportamental } = req.body;
 
   try {
-    const promptSistema = montarPromptSistema(contexto, perfilComportamental);
-
-    const mensagens = [
-      ...(historico || []).map((h) => [
-        { role: 'user', content: h.pergunta },
-        { role: 'assistant', content: h.resposta },
-      ]).flat(),
-      { role: 'user', content: pergunta },
-    ];
-    return res.status(503).json({
-      erro: 'IA ainda não configurada. Defina ANTHROPIC_API_KEY no arquivo backend/.env e descomente a chamada em src/routes/assistente.js.',
+    const resposta = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${GROQ_API_KEY}`
+      },
+      body: JSON.stringify({
+        model: "openai/gpt-oss-20b",
+        messages: [
+          { role: "system", content: "Você é um assistente financeiro chamado Sobrou. Responda de forma breve, clara e objetiva, em até 3 frases." },
+          { role: "user", content: `Pergunta: ${pergunta}\nContexto: ${JSON.stringify(contexto)}\nPerfil: ${perfilComportamental}` }
+        ],
+        max_tokens: 200
+      })
     });
+
+    const data = await resposta.json();
+    console.log(JSON.stringify(data, null, 2)); // log para debug
+
+    const texto = data.choices?.[0]?.message?.content || "Não consegui gerar resposta.";
+    return res.json({ resposta: texto });
+
   } catch (erro) {
-    console.error('Erro ao consultar IA:', erro);
-    return res.status(500).json({ erro: 'Erro ao consultar o assistente financeiro.' });
+    console.error("Erro ao consultar Groq:", erro);
+    return res.status(500).json({ erro: "Erro ao consultar o assistente." });
   }
 });
 

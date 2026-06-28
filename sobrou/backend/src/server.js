@@ -19,7 +19,7 @@ app.use(cors({ origin: origensPermitidas }));
 app.use(express.json());
 
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'ok', ia_configurada: !!process.env.ANTHROPIC_API_KEY });
+  res.json({ status: 'ok', ia_configurada: !!process.env.GROQ_API_KEY });
 });
 
 app.use('/api/assistente', assistenteRoutes);
@@ -32,8 +32,8 @@ app.use((err, req, res, next) => {
 app.listen(PORT, () => {
   console.log(`Servidor do Assistente IA rodando em http://localhost:${PORT}`);
   console.log(
-    process.env.ANTHROPIC_API_KEY
-      ? 'Chave da Anthropic encontrada — IA pronta para uso (lembre de descomentar a chamada em routes/assistente.js).'
-      : 'ANTHROPIC_API_KEY não configurada. Crie backend/.env com sua chave para ativar o Assistente Financeiro.'
+    process.env.GROQ_API_KEY
+      ? 'Chave GROQ encontrada — IA pronta para uso (lembre de descomentar a chamada em routes/assistente.js).'
+      : 'GROQ_API_KEY não configurada. Crie backend/.env com sua chave para ativar o Assistente Financeiro.'
   );
 });
