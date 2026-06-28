@@ -1,0 +1,83 @@
+.perfil-cabecalho {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.perfil-avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(145deg, var(--vermelho-vibrante), var(--vermelho-escuro));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--fonte-display);
+  font-weight: 800;
+  font-size: 1.4rem;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.perfil-nome {
+  display: block;
+  font-weight: 700;
+  font-size: 1.05rem;
+}
+
+.perfil-email {
+  display: block;
+  color: var(--texto-secundario);
+  font-size: 0.84rem;
+}
+
+.perfil-detalhes {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.perfil-linha {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.88rem;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--cor-borda-sutil);
+}
+
+.perfil-linha span:first-child {
+  color: var(--texto-secundario);
+}
+
+.perfil-comportamental {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+}
+
+.perfil-comportamental-emoji {
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+
+.perfil-comportamental-rotulo {
+  display: block;
+  font-weight: 700;
+  font-size: 1.05rem;
+  margin-bottom: 4px;
+}
+
+.perfil-comportamental-descricao {
+  color: var(--texto-secundario);
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.perfil-comportamental-nota {
+  font-size: 0.78rem;
+  color: var(--texto-terciario);
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--cor-borda-sutil);
+}

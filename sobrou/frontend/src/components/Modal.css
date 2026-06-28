@@ -1,0 +1,67 @@
+.modal-fundo {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  backdrop-filter: blur(3px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 20px;
+  animation: aparecer 0.15s ease;
+}
+
+@keyframes aparecer {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.modal-caixa {
+  background: var(--cor-superficie-alta);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-lg);
+  width: 100%;
+  max-width: 460px;
+  max-height: 88vh;
+  overflow-y: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  animation: deslizar 0.2s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@keyframes deslizar {
+  from { opacity: 0; transform: translateY(12px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.modal-cabecalho {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--cor-borda-sutil);
+  position: sticky;
+  top: 0;
+  background: var(--cor-superficie-alta);
+}
+
+.modal-cabecalho h3 {
+  font-family: var(--fonte-display);
+  font-size: 1.05rem;
+}
+
+.modal-fechar {
+  background: none;
+  border: none;
+  color: var(--texto-secundario);
+  font-size: 1.6rem;
+  line-height: 1;
+  padding: 0 4px;
+}
+
+.modal-fechar:hover {
+  color: var(--texto-primario);
+}
+
+.modal-corpo {
+  padding: 22px 24px 24px;
+}

@@ -1,0 +1,26 @@
+.card {
+  background: var(--cor-superficie);
+  border: 1px solid var(--cor-borda-sutil);
+  border-radius: var(--raio-md);
+  padding: 22px 24px;
+}
+
+.card-cabecalho {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.card-titulo {
+  font-family: var(--fonte-display);
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--texto-primario);
+}
+
+.card-corpo {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}

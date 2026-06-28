@@ -1,0 +1,145 @@
+.pagina-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.pagina-cabecalho {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.pagina-cabecalho h1 {
+  font-family: var(--fonte-display);
+  font-size: 1.6rem;
+  font-weight: 800;
+}
+
+.pagina-cabecalho p {
+  color: var(--texto-secundario);
+  font-size: 0.9rem;
+  margin-top: 2px;
+}
+
+.resumo-total {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.resumo-total-valor {
+  font-size: 1.4rem;
+}
+
+.pagina-vazio {
+  text-align: center;
+  color: var(--texto-secundario);
+  padding: 32px 0;
+  font-size: 0.9rem;
+}
+
+.lista-cartoes {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.item-cartao {
+  background: var(--cor-superficie);
+  border: 1px solid var(--cor-borda-sutil);
+  border-radius: var(--raio-md);
+  padding: 16px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  transition: border-color 0.15s ease;
+}
+
+.item-cartao:hover {
+  border-color: var(--cor-borda);
+}
+
+.item-cartao-info {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.item-cartao-nome {
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.item-cartao-meta {
+  font-size: 0.78rem;
+  color: var(--texto-secundario);
+}
+
+.item-cartao-obs {
+  font-size: 0.78rem;
+  color: var(--texto-terciario);
+  font-style: italic;
+}
+
+.item-cartao-acoes {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-shrink: 0;
+}
+
+.item-cartao-tags {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.item-cartao-status {
+  font-size: 0.74rem;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: var(--raio-pill);
+  border: none;
+  cursor: pointer;
+}
+
+.status-paga {
+  background: rgba(45, 212, 167, 0.14);
+  color: var(--verde-sucesso);
+}
+
+.status-pendente {
+  background: rgba(242, 185, 74, 0.14);
+  color: var(--amarelo-alerta);
+}
+
+.filtros-barra {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.filtros-barra select {
+  background: var(--cor-superficie);
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-sm);
+  padding: 8px 12px;
+  color: var(--texto-primario);
+  font-size: 0.85rem;
+}
+
+@media (max-width: 600px) {
+  .item-cartao {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .item-cartao-acoes {
+    width: 100%;
+    justify-content: space-between;
+  }
+}

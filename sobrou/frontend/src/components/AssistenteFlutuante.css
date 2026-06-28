@@ -1,0 +1,32 @@
+.assistente-botao {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--vermelho-vibrante), var(--vermelho-escuro));
+  color: #fff;
+  font-size: 1.4rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 28px var(--vermelho-glow);
+  z-index: 60;
+  border: none;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.assistente-botao:hover {
+  transform: translateY(-2px) scale(1.04);
+  box-shadow: 0 10px 34px var(--vermelho-glow);
+}
+
+@media (max-width: 880px) {
+  /* Em mobile, "Assistente" já está na barra de navegação inferior fixa —
+     manter o botão flutuante aqui causaria sobreposição de conteúdo nas
+     páginas e duplicaria o mesmo destino. */
+  .assistente-botao {
+    display: none;
+  }
+}
