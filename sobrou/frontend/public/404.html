@@ -5,12 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sobrou</title>
     <script>
-      // O GitHub Pages serve este arquivo para qualquer rota que não exista
-      // como arquivo físico (por exemplo /redefinir-senha, vinda de um link
-      // de e-mail do Supabase). Como o app é uma SPA com rotas no cliente
-      // (React Router), a rota acessada precisa ser preservada e devolvida
-      // ao index.html para o React assumir o roteamento.
-      var caminhoBase = '/sobrou/';
+  
+      var caminhoBase = 'https://isaadsl.github.io/sobrou/';
       var rotaSolicitada = window.location.pathname.slice(caminhoBase.length) || '/';
 
       sessionStorage.setItem('sobrou:redirecionar_para', rotaSolicitada + window.location.search + window.location.hash);
