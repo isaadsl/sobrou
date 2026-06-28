@@ -7,7 +7,7 @@ import '../../styles/formularios.css';
 import './Auth.css';
 
 export default function Cadastro() {
-  const { cadastrar, entrarComGoogle } = useAuth();
+  const { cadastrar} = useAuth();
   const navigate = useNavigate();
 
   const [form, setForm] = useState({ nome: '', email: '', telefone: '', senha: '' });
@@ -41,12 +41,6 @@ export default function Cadastro() {
     }
   }
 
-  async function aoCadastrarComGoogle() {
-    setErro('');
-    const { error } = await entrarComGoogle();
-    if (error) setErro(traduzirErroSupabase(error.message));
-  }
-
   return (
     <div className="auth-pagina">
       <div className="auth-caixa">
@@ -60,11 +54,7 @@ export default function Cadastro() {
         {erro && <div className="auth-erro">{erro}</div>}
         {sucesso && <div className="auth-sucesso">{sucesso}</div>}
 
-        <button className="botao-google" onClick={aoCadastrarComGoogle} type="button">
-          <span style={{ fontSize: '1.1rem' }}>G</span> Cadastrar com Google
-        </button>
-
-        <div className="auth-divisor">ou cadastre-se com e-mail</div>
+        <div className="auth-divisor">Cadastre-se com e-mail</div>
 
         <form onSubmit={aoCadastrar}>
           <div className="form-campo">

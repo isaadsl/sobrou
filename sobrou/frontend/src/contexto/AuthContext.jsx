@@ -3,22 +3,11 @@ import { supabase } from '../services/supabaseClient';
 
 const AuthContext = createContext(null);
 
-// Em produção o app é servido em um subcaminho (GitHub Pages:
-// /SobrouWeb/), então window.location.origin por si só não é suficiente
-// para montar links de retorno válidos. Em desenvolvimento (localhost) não
-// há subcaminho nenhum, então usamos import.meta.env.BASE_URL, que o Vite
-// já preenche corretamente nos dois casos a partir de "base" em vite.config.js.
 function urlPublica(rota = '') {
   const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   return `${window.location.origin}${base}${rota}`;
 }
 
-// Quando o Supabase devolve o usuário de um fluxo OAuth ou de e-mail
-// (confirmação de cadastro, recuperação de senha), o token chega no hash da
-// própria URL. O supabase-js precisa de um instante para processar esse
-// hash antes de qualquer rota decidir redirecionar — caso contrário a rota
-// protegida pode mandar o usuário de volta para login antes da sessão ser
-// criada, descartando o token no processo.
 function urlTemRetornoDeAuth() {
   return typeof window !== 'undefined' && /access_token|refresh_token|error=|type=recovery/.test(window.location.hash);
 }
@@ -79,16 +68,6 @@ export function AuthProvider({ children }) {
     return { data, error };
   }
 
-  async function entrarComGoogle() {
-    const { data, error } = await supabase.auth.signInWithOAuth({
-      provider: 'google',
-      options: {
-        redirectTo: urlPublica('/'),
-      },
-    });
-    return { data, error };
-  }
-
   async function recuperarSenha(email) {
     const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
       redirectTo: urlPublica('/redefinir-senha'),
@@ -125,7 +104,6 @@ export function AuthProvider({ children }) {
     autenticado: !!usuario,
     cadastrar,
     entrarComEmail,
-    entrarComGoogle,
     recuperarSenha,
     atualizarSenha,
     sair,

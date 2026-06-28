@@ -91,25 +91,6 @@
   background: var(--cor-borda);
 }
 
-.botao-google {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 10px;
-  width: 100%;
-  padding: 11px 16px;
-  border-radius: var(--raio-sm);
-  background: var(--cor-superficie-alta);
-  border: 1px solid var(--cor-borda);
-  color: var(--texto-primario);
-  font-weight: 600;
-  font-size: 0.9rem;
-}
-
-.botao-google:hover {
-  background: var(--cor-borda);
-}
-
 .auth-links {
   display: flex;
   flex-direction: column;

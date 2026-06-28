@@ -7,7 +7,7 @@ import '../../styles/formularios.css';
 import './Auth.css';
 
 export default function Login() {
-  const { entrarComEmail, entrarComGoogle } = useAuth();
+  const { entrarComEmail } = useAuth();
   const navigate = useNavigate();
 
   const [emailOuTelefone, setEmailOuTelefone] = useState('');
@@ -32,12 +32,6 @@ export default function Login() {
     navigate('/');
   }
 
-  async function aoEntrarComGoogle() {
-    setErro('');
-    const { error } = await entrarComGoogle();
-    if (error) setErro(traduzirErroSupabase(error.message));
-  }
-
   return (
     <div className="auth-pagina">
       <div className="auth-caixa">
@@ -49,11 +43,7 @@ export default function Login() {
         <h2 className="auth-titulo">Entrar na sua conta</h2>
 
         {erro && <div className="auth-erro">{erro}</div>}
-
-        <button className="botao-google" onClick={aoEntrarComGoogle} type="button">
-          <span style={{ fontSize: '1.1rem' }}>G</span> Entrar com Google
-        </button>
-
+        
         <div className="auth-divisor">ou entre com e-mail / telefone</div>
 
         <form onSubmit={aoEntrar}>

@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 3001;
 // adicione outras origens aqui se o frontend for publicado em outro lugar.
 const origensPermitidas = [
   'http://localhost:5173',
-  'https://isaadsl.github.io',
+  'https://isaadsl.github.io/sobrou/',
 ];
 
 app.use(cors({ origin: origensPermitidas }));

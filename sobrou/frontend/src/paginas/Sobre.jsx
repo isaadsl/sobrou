@@ -19,9 +19,9 @@ export default function Sobre() {
         </div>
 
         <p className="sobre-texto">
-          O <strong>Sobrou</strong> é um aplicativo de planejamento financeiro pessoal pensado para
+          O <strong>Sobrou</strong> É um aplicativo de planejamento financeiro pessoal pensado para
           tornar a gestão do seu dinheiro simples e visual. Em vez de planilhas complicadas, você
-          acompanha seu saldo, suas contas e suas metas em tempo real — e entende, em segundos,
+          acompanha seu saldo, suas contas e suas metas em tempo real e entende, em segundos,
           para onde o seu dinheiro está indo.
         </p>
 
@@ -37,7 +37,7 @@ export default function Sobre() {
 
       <Card titulo="Privacidade e segurança">
         <p className="sobre-texto">
-          Seus dados financeiros são individuais e protegidos: cada conta só tem acesso às suas
+          Seus dados financeiros são individuais e protegidos. Cada conta só tem acesso às suas
           próprias informações. Nenhum outro usuário pode visualizar seus dados.
         </p>
       </Card>

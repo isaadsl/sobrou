@@ -16,7 +16,7 @@
         var rotaSalva = sessionStorage.getItem('sobrou:redirecionar_para');
         if (rotaSalva) {
           sessionStorage.removeItem('sobrou:redirecionar_para');
-          var caminhoBase = '/SobrouWeb';
+          var caminhoBase = '/sobrou/';
           window.history.replaceState(null, '', caminhoBase + rotaSalva);
         }
       })();
