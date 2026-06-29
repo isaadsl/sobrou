@@ -1,0 +1,109 @@
+.carteira {
+  position: relative;
+  border-radius: var(--raio-lg);
+  overflow: hidden;
+  background: linear-gradient(155deg, #1c1010, #0d0708);
+  box-shadow:
+    var(--sombra-card),
+    inset 0 0 0 1px rgba(255, 255, 255, 0.04);
+  min-height: 200px;
+  isolation: isolate;
+}
+
+.carteira::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(
+      135deg,
+      rgba(255, 255, 255, 0.015) 0px,
+      rgba(255, 255, 255, 0.015) 1px,
+      transparent 1px,
+      transparent 14px
+    );
+  pointer-events: none;
+  z-index: 2;
+}
+
+.carteira-preenchimento {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--vermelho-vibrante) 0%, var(--vermelho-intenso) 45%, var(--vermelho-escuro) 100%);
+  box-shadow: 0 0 60px 10px var(--vermelho-glow);
+  transition: width 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+  z-index: 0;
+}
+
+.carteira-negativa .carteira-preenchimento {
+  background: linear-gradient(135deg, #5a0d12, #2a0608);
+}
+
+.carteira-conteudo {
+  position: relative;
+  z-index: 3;
+  padding: 28px 32px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 200px;
+}
+
+.carteira-topo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.carteira-rotulo {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.85);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.carteira-chip {
+  width: 38px;
+  height: 38px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.05rem;
+  color: #fff;
+}
+
+.carteira-valor {
+  font-family: var(--fonte-display);
+  font-size: clamp(2.4rem, 4vw, 3.4rem);
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.02em;
+  text-shadow: 0 2px 20px rgba(0, 0, 0, 0.35);
+  margin: 8px 0;
+}
+
+.carteira-base {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.carteira-percentual {
+  font-weight: 700;
+  background: rgba(0, 0, 0, 0.25);
+  padding: 4px 10px;
+  border-radius: var(--raio-pill);
+}
+
+@media (max-width: 600px) {
+  .carteira-conteudo {
+    padding: 22px 22px;
+  }
+}

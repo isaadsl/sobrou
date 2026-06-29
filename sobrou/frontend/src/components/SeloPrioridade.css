@@ -1,0 +1,25 @@
+.selo-prioridade {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: var(--raio-pill);
+  white-space: nowrap;
+}
+
+.selo-prioridade-alta {
+  background: rgba(255, 59, 59, 0.12);
+  color: #ff7575;
+}
+
+.selo-prioridade-media {
+  background: rgba(242, 185, 74, 0.12);
+  color: var(--amarelo-alerta);
+}
+
+.selo-prioridade-baixa {
+  background: rgba(45, 212, 167, 0.12);
+  color: var(--verde-sucesso);
+}

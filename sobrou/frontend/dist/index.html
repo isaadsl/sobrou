@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sobrou — Visualize, planeje e economize</title>
+    <script type="module" crossorigin src="/sobrou/assets/index-3JxbF1TA.js"></script>
+    <link rel="stylesheet" crossorigin href="/sobrou/assets/index-DbQgZKem.css">
+  </head>
+  <body>
+    <div id="root"></div>
+    <script>
+      // Complemento do public/404.html: se o usuário chegou aqui através de
+      // um redirecionamento de uma rota inexistente como arquivo físico,
+      // restaura a URL original antes do React Router inicializar, para que
+      // a navegação abra na tela certa (ex: /redefinir-senha vinda de e-mail).
+      (function () {
+        var rotaSalva = sessionStorage.getItem('sobrou:redirecionar_para');
+        if (rotaSalva) {
+          sessionStorage.removeItem('sobrou:redirecionar_para');
+          var caminhoBase = '/sobrou/';
+          window.history.replaceState(null, '', caminhoBase + rotaSalva);
+        }
+      })();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,47 @@
+.metas-grade {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 16px;
+}
+
+.meta-card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.meta-cabecalho {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.meta-nome {
+  font-weight: 700;
+  font-size: 1.02rem;
+}
+
+.meta-valores {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.meta-valores .valor-monetario {
+  font-size: 1.2rem;
+}
+
+.meta-valores-meta {
+  font-size: 0.8rem;
+  color: var(--texto-secundario);
+}
+
+.meta-data-alvo {
+  font-size: 0.78rem;
+  color: var(--texto-terciario);
+}
+
+.meta-botao-aporte {
+  width: 100%;
+  margin-top: 4px;
+}

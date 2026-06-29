@@ -1,0 +1,65 @@
+.splash {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--cor-fundo);
+  background-image:
+    radial-gradient(ellipse 70% 50% at 50% 30%, rgba(255, 59, 59, 0.18), transparent 60%);
+  animation: splash-fade-in 0.3s ease;
+}
+
+@keyframes splash-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.splash-icone {
+  width: 84px;
+  height: 84px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 24px;
+  background: linear-gradient(145deg, var(--vermelho-vibrante), var(--vermelho-escuro));
+  font-family: var(--fonte-display);
+  font-weight: 800;
+  font-size: 2.4rem;
+  color: #fff;
+  box-shadow: 0 12px 40px var(--vermelho-glow);
+  margin-bottom: 22px;
+  animation: splash-pulso 1.8s ease-in-out infinite;
+}
+
+@keyframes splash-pulso {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.splash-nome {
+  font-family: var(--fonte-display);
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--texto-primario);
+  margin-bottom: 6px;
+}
+
+.splash-slogan {
+  color: var(--texto-secundario);
+  font-size: 0.92rem;
+  margin-bottom: 36px;
+}
+
+.splash-spinner {
+  width: 28px;
+  height: 28px;
+  border: 3px solid var(--cor-borda);
+  border-top-color: var(--vermelho-vibrante);
+  border-radius: 50%;
+  animation: splash-girar 0.8s linear infinite;
+}
+
+@keyframes splash-girar {
+  to { transform: rotate(360deg); }
+}

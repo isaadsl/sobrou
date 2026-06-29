@@ -1,0 +1,82 @@
+.calendario-navegacao {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.calendario-navegacao .botao {
+  padding: 8px 14px;
+}
+
+.calendario-mes-atual {
+  font-weight: 600;
+  text-transform: capitalize;
+  min-width: 160px;
+  text-align: center;
+}
+
+.calendario-legenda {
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+  font-size: 0.8rem;
+  color: var(--texto-secundario);
+  margin-bottom: 16px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--cor-borda-sutil);
+}
+
+.calendario-grade {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 6px;
+}
+
+.calendario-dia-semana {
+  text-align: center;
+  font-size: 0.74rem;
+  color: var(--texto-terciario);
+  font-weight: 600;
+  padding-bottom: 6px;
+}
+
+.calendario-celula {
+  aspect-ratio: 1;
+  background: var(--cor-superficie-alta);
+  border-radius: var(--raio-sm);
+  padding: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  border: 1px solid var(--cor-borda-sutil);
+}
+
+.calendario-celula-vazia {
+  background: none;
+  border: none;
+}
+
+.calendario-numero-dia {
+  font-size: 0.78rem;
+  color: var(--texto-secundario);
+  font-weight: 600;
+}
+
+.calendario-eventos {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px;
+  font-size: 0.85rem;
+}
+
+@media (max-width: 700px) {
+  .calendario-celula {
+    padding: 4px;
+  }
+  .calendario-numero-dia {
+    font-size: 0.68rem;
+  }
+  .calendario-eventos {
+    font-size: 0.7rem;
+  }
+}

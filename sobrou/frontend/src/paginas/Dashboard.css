@@ -1,0 +1,124 @@
+.dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.dashboard-cabecalho h1 {
+  font-family: var(--fonte-display);
+  font-size: 1.7rem;
+  font-weight: 800;
+}
+
+.dashboard-cabecalho p {
+  color: var(--texto-secundario);
+  font-size: 0.92rem;
+  margin-top: 2px;
+  text-transform: capitalize;
+}
+
+.dashboard-grade-principal {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 18px;
+}
+
+.dashboard-mini-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.mini-card {
+  background: var(--cor-superficie);
+  border: 1px solid var(--cor-borda-sutil);
+  border-radius: var(--raio-md);
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  justify-content: center;
+}
+
+.mini-card-rotulo {
+  font-size: 0.78rem;
+  color: var(--texto-secundario);
+}
+
+.mini-card-valor {
+  font-size: 1.3rem;
+}
+
+.cor-positiva {
+  color: var(--verde-sucesso);
+}
+
+.cor-negativa {
+  color: #ff7575;
+}
+
+.dashboard-legenda-consumo {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.8rem;
+  color: var(--texto-secundario);
+  margin-top: 10px;
+}
+
+.dashboard-lista-despesas {
+  list-style: none;
+}
+
+.dashboard-item-despesa {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--cor-borda-sutil);
+}
+
+.dashboard-item-despesa:last-child {
+  border-bottom: none;
+}
+
+.dashboard-item-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.dashboard-item-nome {
+  font-weight: 500;
+}
+
+.dashboard-vazio {
+  color: var(--texto-secundario);
+  font-size: 0.9rem;
+  text-align: center;
+  padding: 20px 0;
+}
+
+.dashboard-carregando,
+.dashboard-erro {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 60vh;
+  color: var(--texto-secundario);
+}
+
+@media (max-width: 880px) {
+  .dashboard-grade-principal {
+    grid-template-columns: 1fr;
+  }
+  .dashboard-mini-cards {
+    flex-direction: row;
+  }
+}
+
+@media (max-width: 600px) {
+  .dashboard-mini-cards {
+    flex-direction: column;
+  }
+}
