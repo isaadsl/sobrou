@@ -5,7 +5,6 @@ export default function AssistenteFlutuante() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // Não mostra o botão flutuante quando já está dentro do próprio Assistente
   if (location.pathname === '/assistente') return null;
 
   return (
@@ -14,7 +13,7 @@ export default function AssistenteFlutuante() {
       onClick={() => navigate('/assistente')}
       aria-label="Abrir assistente financeiro"
     >
-      ✨
+      💬
     </button>
   );
 }

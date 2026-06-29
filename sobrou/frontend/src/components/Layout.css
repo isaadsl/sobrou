@@ -175,20 +175,24 @@
   .layout {
     flex-direction: column;
   }
-
+ 
   .layout-barra-lateral {
     width: 100%;
     height: auto;
-    position: sticky;
+    position: relative;
     top: 0;
     flex-direction: row;
     align-items: center;
-    padding: 14px 18px;
+    padding: 12px 20px;
     z-index: 40;
   }
 
   .layout-marca-slogan {
-    display: none;
+    display: block;
+    font-size: 0.97rem;
+    color: var(--texto-terciario);
+    font-weight: 500;
+    margin-top:  2px;
   }
 
   /* Em mobile, a navegação completa (links + perfil + sobre) some da barra
@@ -205,13 +209,13 @@
 
   .layout-nav-mobile {
     display: flex;
-    position: fixed;
+    position: relative;
     bottom: 0;
     left: 0;
     right: 0;
     background: var(--cor-superficie);
     border-top: 1px solid var(--cor-borda-sutil);
-    padding: 6px 4px;
+    padding: 2px 4px;
     padding-bottom: max(6px, env(safe-area-inset-bottom));
     z-index: 50;
   }

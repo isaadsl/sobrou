@@ -48,8 +48,7 @@ export default function AssistenteIA() {
     const texto = (textoPergunta || pergunta).trim();
     if (!texto || enviando) return;
 
-    const historicoNoMomento = mensagens.filter((m) => m.resposta); // só trocas já concluídas
-
+    const historicoNoMomento = mensagens.filter((m) => m.resposta);
     setPergunta('');
     setEnviando(true);
 
@@ -110,7 +109,7 @@ export default function AssistenteIA() {
           <p>Pergunte qualquer coisa sobre suas finanças, com base nos seus dados reais</p>
         </div>
         <button className="botao botao-secundario" onClick={() => setModalSimulacaoAberto(true)}>
-          🧮 Simular compra
+           Simular compra
         </button>
       </header>
 

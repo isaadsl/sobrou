@@ -23,9 +23,6 @@
 }
 
 @media (max-width: 880px) {
-  /* Em mobile, "Assistente" já está na barra de navegação inferior fixa —
-     manter o botão flutuante aqui causaria sobreposição de conteúdo nas
-     páginas e duplicaria o mesmo destino. */
   .assistente-botao {
     display: none;
   }

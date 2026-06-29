@@ -6,8 +6,8 @@ import './Layout.css';
 const ITENS_PRINCIPAIS = [
   { caminho: '/', rotulo: 'Painel', icone: '◆' },
   { caminho: '/despesas', rotulo: 'Despesas', icone: '↓' },
-  { caminho: '/proximo-salario', rotulo: 'Próx. Salário', icone: '⏵' },
-  { caminho: '/assistente', rotulo: 'Assistente', icone: '✨' },
+  { caminho: '/proximo-salario', rotulo: 'Próx. Salário', icone: '📉' },
+  { caminho: '/assistente', rotulo: 'Assistente', icone: '💬' },
 ];
 
 const ITENS_SECUNDARIOS = [

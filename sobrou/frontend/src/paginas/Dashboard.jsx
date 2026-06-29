@@ -92,7 +92,7 @@ export default function Dashboard() {
 
       <Card titulo="Próximas contas por prioridade">
         {proximasDespesas.length === 0 ? (
-          <p className="dashboard-vazio">Nenhuma despesa pendente este mês. 🎉</p>
+          <p className="dashboard-vazio">Nenhuma despesa pendente este mês. </p>
         ) : (
           <ul className="dashboard-lista-despesas">
             {proximasDespesas.map((despesa) => (

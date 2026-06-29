@@ -41,7 +41,7 @@ export default function PlanejamentoMensal() {
       </Card>
 
       <div className="planejamento-colunas">
-        <Card titulo="💰 Recebimentos previstos">
+        <Card titulo="Recebimentos previstos">
           {dados.recebimentos_futuros.length === 0 ? (
             <p className="pagina-vazio">Nenhum recebimento futuro neste mês.</p>
           ) : (
@@ -56,7 +56,7 @@ export default function PlanejamentoMensal() {
           )}
         </Card>
 
-        <Card titulo="🧾 Contas futuras">
+        <Card titulo="Contas futuras">
           {dados.contas_futuras.length === 0 ? (
             <p className="pagina-vazio">Nenhuma conta pendente futura.</p>
           ) : (
@@ -71,7 +71,7 @@ export default function PlanejamentoMensal() {
           )}
         </Card>
 
-        <Card titulo="✅ Gastos já realizados">
+        <Card titulo="Gastos já realizados">
           {dados.gastos_realizados.length === 0 ? (
             <p className="pagina-vazio">Nenhum gasto pago ainda este mês.</p>
           ) : (

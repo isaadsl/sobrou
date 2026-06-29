@@ -15,7 +15,7 @@ export default function ProximoSalario() {
   const [planejamentos, setPlanejamentos] = useState([]);
   const [carregando, setCarregando] = useState(true);
   const [modalNovoAberto, setModalNovoAberto] = useState(false);
-  const [modalItemAberto, setModalItemAberto] = useState(null); // id do planejamento
+  const [modalItemAberto, setModalItemAberto] = useState(null); 
   const [formPlanejamento, setFormPlanejamento] = useState(FORM_PLANEJAMENTO_VAZIO);
   const [formItem, setFormItem] = useState(FORM_ITEM_VAZIO);
   const [salvando, setSalvando] = useState(false);
