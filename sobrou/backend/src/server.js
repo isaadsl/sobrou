@@ -12,7 +12,7 @@ const PORT = process.env.PORT || 3001;
 // adicione outras origens aqui se o frontend for publicado em outro lugar.
 const origensPermitidas = [
   'http://localhost:5173',
-  'https://isaadsl.github.io/sobrou/',
+  'https://isaadsl.github.io',
 ];
 
 app.use(cors({ origin: origensPermitidas }));
@@ -33,7 +33,7 @@ app.listen(PORT, () => {
   console.log(`Servidor do Assistente IA rodando em http://localhost:${PORT}`);
   console.log(
     process.env.GROQ_API_KEY
-      ? 'Chave GROQ encontrada — IA pronta para uso (lembre de descomentar a chamada em routes/assistente.js).'
+      ? 'Chave da Groq encontrada — IA pronta para uso.'
       : 'GROQ_API_KEY não configurada. Crie backend/.env com sua chave para ativar o Assistente Financeiro.'
   );
 });
