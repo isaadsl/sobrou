@@ -163,9 +163,6 @@
   max-width: 1180px;
 }
 
-/* Navegação inferior fixa do mobile e painel "Mais" — ficam ocultos em
-   desktop por padrão; a media query abaixo os revela e esconde a versão
-   desktop correspondente. */
 .layout-nav-mobile,
 .layout-mais-fundo {
   display: none;
@@ -195,9 +192,6 @@
     margin-top:  2px;
   }
 
-  /* Em mobile, a navegação completa (links + perfil + sobre) some da barra
-     superior — ela vira só a marca — e é substituída pela barra inferior
-     fixa renderizada em .layout-nav-mobile. */
   .layout-nav-desktop,
   .layout-rodape {
     display: none;
