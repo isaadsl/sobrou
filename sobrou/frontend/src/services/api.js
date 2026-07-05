@@ -23,9 +23,7 @@ function ordenarPorPrioridade(lista) {
   return [...lista].sort((a, b) => (PRIORIDADE_ORDEM[a.prioridade] ?? 3) - (PRIORIDADE_ORDEM[b.prioridade] ?? 3));
 }
 
-// O Postgres/PostgREST pode retornar colunas `numeric` como string para
-// preservar precisão. Convertendo explicitamente para Number aqui evita
-// bugs sutis de concatenação de string em vez de soma matemática.
+
 function normalizarNumeros(registro, campos) {
   const copia = { ...registro };
   campos.forEach((campo) => {
@@ -46,236 +44,17 @@ function comProgresso(meta) {
 }
 
 export const api = {
-  // ---------------- Usuário / Perfil ----------------
   async buscarUsuario() {
-    const userId = await usuarioAtualId();
-    const { data, error } = await supabase.from('profiles').select('*').eq('id', userId).single();
-    checarErro(error);
-    return data;
-  },
-
-  async atualizarUsuario(dados) {
     const userId = await usuarioAtualId();
     const { data, error } = await supabase
       .from('profiles')
-      .update(dados)
+      .select('*')
       .eq('id', userId)
-      .select()
       .single();
     checarErro(error);
     return data;
   },
 
-  // ---------------- Receitas ----------------
-  async listarReceitas(mes) {
-    const userId = await usuarioAtualId();
-    let query = supabase.from('receitas').select('*').eq('user_id', userId).order('data_recebimento');
-
-    if (mes) {
-      const { inicio, fim } = inicioFimMes(mes);
-      query = query.gte('data_recebimento', inicio).lte('data_recebimento', fim);
-    }
-
-    const { data, error } = await query;
-    checarErro(error);
-    return data.map((r) => normalizarNumeros(r, ['valor']));
-  },
-
-  async criarReceita(dados) {
-    const userId = await usuarioAtualId();
-    const { data, error } = await supabase
-      .from('receitas')
-      .insert({ ...dados, user_id: userId })
-      .select()
-      .single();
-    checarErro(error);
-    return normalizarNumeros(data, ['valor']);
-  },
-
-  async atualizarReceita(id, dados) {
-    const { data, error } = await supabase.from('receitas').update(dados).eq('id', id).select().single();
-    checarErro(error);
-    return normalizarNumeros(data, ['valor']);
-  },
-
-  async excluirReceita(id) {
-    const { error } = await supabase.from('receitas').delete().eq('id', id);
-    checarErro(error);
-    return null;
-  },
-
-  // ---------------- Despesas ----------------
-  async listarDespesas(params = {}) {
-    const userId = await usuarioAtualId();
-    let query = supabase.from('despesas').select('*').eq('user_id', userId);
-
-    if (params.mes) {
-      const { inicio, fim } = inicioFimMes(params.mes);
-      query = query.gte('data_vencimento', inicio).lte('data_vencimento', fim);
-    }
-    if (params.status) query = query.eq('status', params.status);
-    if (params.categoria) query = query.eq('categoria', params.categoria);
-
-    const { data, error } = await query;
-    checarErro(error);
-    return ordenarPorPrioridade(data.map((d) => normalizarNumeros(d, ['valor'])));
-  },
-
-  async criarDespesa(dados) {
-    const userId = await usuarioAtualId();
-    const { data, error } = await supabase
-      .from('despesas')
-      .insert({ ...dados, user_id: userId })
-      .select()
-      .single();
-    checarErro(error);
-    return normalizarNumeros(data, ['valor']);
-  },
-
-  async atualizarDespesa(id, dados) {
-    const { data, error } = await supabase.from('despesas').update(dados).eq('id', id).select().single();
-    checarErro(error);
-    return normalizarNumeros(data, ['valor']);
-  },
-
-  async alternarStatusDespesa(id) {
-    const { data: atual, error: erroBusca } = await supabase
-      .from('despesas')
-      .select('status')
-      .eq('id', id)
-      .single();
-    checarErro(erroBusca);
-
-    const novoStatus = atual.status === 'paga' ? 'pendente' : 'paga';
-    const { data, error } = await supabase
-      .from('despesas')
-      .update({ status: novoStatus })
-      .eq('id', id)
-      .select()
-      .single();
-    checarErro(error);
-    return normalizarNumeros(data, ['valor']);
-  },
-
-  async excluirDespesa(id) {
-    const { error } = await supabase.from('despesas').delete().eq('id', id);
-    checarErro(error);
-    return null;
-  },
-
-  // ---------------- Metas ----------------
-  async listarMetas() {
-    const userId = await usuarioAtualId();
-    const { data, error } = await supabase
-      .from('metas')
-      .select('*')
-      .eq('user_id', userId)
-      .order('criado_em', { ascending: false });
-    checarErro(error);
-
-    return data.map(comProgresso);
-  },
-
-  async criarMeta(dados) {
-    const userId = await usuarioAtualId();
-    const { data, error } = await supabase
-      .from('metas')
-      .insert({ ...dados, user_id: userId })
-      .select()
-      .single();
-    checarErro(error);
-    return comProgresso(data);
-  },
-
-  async atualizarMeta(id, dados) {
-    const { data, error } = await supabase.from('metas').update(dados).eq('id', id).select().single();
-    checarErro(error);
-    return comProgresso(data);
-  },
-
-  async excluirMeta(id) {
-    const { error } = await supabase.from('metas').delete().eq('id', id);
-    checarErro(error);
-    return null;
-  },
-
-  // ---------------- Planejamento do Próximo Salário ----------------
-  async listarPlanejamentos() {
-    const userId = await usuarioAtualId();
-    const { data: planejamentos, error } = await supabase
-      .from('planejamento_proximo_salario')
-      .select('*')
-      .eq('user_id', userId)
-      .order('data_prevista');
-    checarErro(error);
-
-    const resultados = await Promise.all(
-      planejamentos.map(async (p) => {
-        const { data: itens, error: erroItens } = await supabase
-          .from('planejamento_itens')
-          .select('*')
-          .eq('planejamento_id', p.id)
-          .order('valor', { ascending: false });
-        checarErro(erroItens);
-        return montarResumoPlanejamento(p, itens);
-      })
-    );
-
-    return resultados;
-  },
-
-  async buscarPlanejamento(id) {
-    const { data: p, error } = await supabase
-      .from('planejamento_proximo_salario')
-      .select('*')
-      .eq('id', id)
-      .single();
-    checarErro(error);
-
-    const { data: itens, error: erroItens } = await supabase
-      .from('planejamento_itens')
-      .select('*')
-      .eq('planejamento_id', id)
-      .order('valor', { ascending: false });
-    checarErro(erroItens);
-
-    return montarResumoPlanejamento(p, itens);
-  },
-
-  async criarPlanejamento(dados) {
-    const userId = await usuarioAtualId();
-    const { data, error } = await supabase
-      .from('planejamento_proximo_salario')
-      .insert({ ...dados, user_id: userId })
-      .select()
-      .single();
-    checarErro(error);
-    return montarResumoPlanejamento(data, []);
-  },
-
-  async excluirPlanejamento(id) {
-    const { error } = await supabase.from('planejamento_proximo_salario').delete().eq('id', id);
-    checarErro(error);
-    return null;
-  },
-
-  async adicionarItemPlanejamento(planejamentoId, dados) {
-    const userId = await usuarioAtualId();
-    const { error: erroInsert } = await supabase
-      .from('planejamento_itens')
-      .insert({ ...dados, planejamento_id: planejamentoId, user_id: userId });
-    checarErro(erroInsert);
-
-    return api.buscarPlanejamento(planejamentoId);
-  },
-
-  async removerItemPlanejamento(planejamentoId, itemId) {
-    const { error } = await supabase.from('planejamento_itens').delete().eq('id', itemId);
-    checarErro(error);
-    return api.buscarPlanejamento(planejamentoId);
-  },
-
-  // ---------------- Dashboard (calculado no cliente a partir dos dados) ----------------
   async buscarDashboard(mes) {
     const userId = await usuarioAtualId();
     const { inicio, fim } = inicioFimMes(mes);
@@ -288,9 +67,15 @@ export const api = {
     checarErro(erroR);
     checarErro(erroD);
 
-    const totalReceitas = receitas.reduce((soma, r) => soma + Number(r.valor), 0);
-    const totalDespesas = despesas.reduce((soma, d) => soma + Number(d.valor), 0);
-    const despesasPagas = despesas.filter((d) => d.status === 'paga').reduce((soma, d) => soma + Number(d.valor), 0);
+    const receitasPrincipal = receitas.filter((r) => (r.destino || 'principal') === "principal");
+    const receitasVale = receitas.filter((r) => r.destino === "vale_refeicao");
+    const despesasPrincipal = despesas.filter((d) => (d.destino || 'principal') === "principal");
+    const despesasVale = despesas.filter((d) => d.destino === "vale_refeicao");
+
+    // Totais gerais do painel = apenas o destino "principal" (vale refeição fica separado)
+    const totalReceitas = receitasPrincipal.reduce((soma, r) => soma + Number(r.valor), 0);
+    const totalDespesas = despesasPrincipal.reduce((soma, d) => soma + Number(d.valor), 0);
+    const despesasPagas = despesasPrincipal.filter((d) => d.status === 'paga').reduce((soma, d) => soma + Number(d.valor), 0);
     const despesasPendentes = totalDespesas - despesasPagas;
     const saldoDisponivel = totalReceitas - totalDespesas;
     const percentualComprometido = totalReceitas > 0 ? Math.round((totalDespesas / totalReceitas) * 100) : 0;
@@ -298,9 +83,16 @@ export const api = {
     const economizado = Math.max(0, totalReceitas - totalDespesas - metaEconomia);
 
     const porCategoria = {};
-    despesas.forEach((d) => {
+    despesasPrincipal.forEach((d) => {
       porCategoria[d.categoria] = (porCategoria[d.categoria] || 0) + Number(d.valor);
     });
+
+    const totalReceitasVale = receitasVale.reduce((s, r) => s + Number(r.valor), 0);
+    const totalDespesasVale = despesasVale.reduce((s, d) => s + Number(d.valor), 0);
+    const saldoVale = totalReceitasVale - totalDespesasVale;
+    const percentualVale = totalReceitasVale > 0 
+      ? Math.round((totalDespesasVale / totalReceitasVale) * 100) 
+      : 0;
 
     return {
       mes,
@@ -315,8 +107,13 @@ export const api = {
       despesas_por_prioridade: ordenarPorPrioridade(despesas),
       receitas,
       despesas,
+
+      saldo_vale_refeicao: saldoVale,
+      total_receitas_vale_refeicao: totalReceitasVale,
+      total_despesas_vale_refeicao: totalDespesasVale,
+      percentual_comprometido_vale_refeicao: percentualVale,
     };
-  },
+  },  
 
   async buscarCalendario(mes) {
     const userId = await usuarioAtualId();
@@ -354,7 +151,7 @@ export const api = {
     });
 
     return eventos;
-  },
+  },  
 
   async buscarRelatorios(meses = 6) {
     const userId = await usuarioAtualId();
@@ -366,13 +163,15 @@ export const api = {
       const mesIso = `${data.getFullYear()}-${String(data.getMonth() + 1).padStart(2, '0')}`;
       const { inicio, fim } = inicioFimMes(mesIso);
 
-      const [{ data: receitas }, { data: despesas }] = await Promise.all([
+      const [{ data: receitas, error: erroR }, { data: despesas, error: erroD }] = await Promise.all([
         supabase.from('receitas').select('valor').eq('user_id', userId).gte('data_recebimento', inicio).lte('data_recebimento', fim),
         supabase.from('despesas').select('valor').eq('user_id', userId).gte('data_vencimento', inicio).lte('data_vencimento', fim),
       ]);
+      checarErro(erroR);
+      checarErro(erroD);
 
-      const totalReceitas = (receitas || []).reduce((soma, r) => soma + Number(r.valor), 0);
-      const totalDespesas = (despesas || []).reduce((soma, d) => soma + Number(d.valor), 0);
+      const totalReceitas = (receitas || []).reduce((soma, r) => soma + Number(r.valor || 0), 0);
+      const totalDespesas = (despesas || []).reduce((soma, d) => soma + Number(d.valor || 0), 0);
 
       resultado.push({
         mes: mesIso,
@@ -383,47 +182,7 @@ export const api = {
     }
 
     return resultado;
-  },
-
-  async buscarPlanejamentoMensal(mes) {
-    const userId = await usuarioAtualId();
-    const { inicio, fim } = inicioFimMes(mes);
-    const hoje = new Date().toISOString().split('T')[0];
-
-    const [{ data: receitas, error: erroR }, { data: despesas, error: erroD }] = await Promise.all([
-      supabase.from('receitas').select('*').eq('user_id', userId).gte('data_recebimento', inicio).lte('data_recebimento', fim).order('data_recebimento'),
-      supabase.from('despesas').select('*').eq('user_id', userId).gte('data_vencimento', inicio).lte('data_vencimento', fim).order('data_vencimento'),
-    ]);
-    checarErro(erroR);
-    checarErro(erroD);
-
-    const recebimentosFuturos = receitas.filter((r) => r.data_recebimento >= hoje);
-    const contasFuturas = despesas.filter((d) => d.data_vencimento >= hoje && d.status !== 'paga');
-    const gastosRealizados = despesas.filter((d) => d.status === 'paga');
-
-    const totalReceitas = receitas.reduce((soma, r) => soma + Number(r.valor), 0);
-    const totalDespesas = despesas.reduce((soma, d) => soma + Number(d.valor), 0);
-
-    return {
-      mes,
-      recebimentos_futuros: recebimentosFuturos,
-      contas_futuras: contasFuturas,
-      gastos_realizados: gastosRealizados,
-      saldo_projetado: totalReceitas - totalDespesas,
-    };
-  },
-
-  // ---------------- Conversas com a IA ----------------
-  async listarConversasIA() {
-    const userId = await usuarioAtualId();
-    const { data, error } = await supabase
-      .from('conversas_ia')
-      .select('*')
-      .eq('user_id', userId)
-      .order('criado_em', { ascending: true });
-    checarErro(error);
-    return data;
-  },
+  },  
 
   async salvarConversaIA({ pergunta, resposta, contexto_usado }) {
     const userId = await usuarioAtualId();
@@ -434,6 +193,219 @@ export const api = {
       .single();
     checarErro(error);
     return data;
+  },
+
+  // ---------- Receitas ----------
+  async listarReceitas() {
+    const userId = await usuarioAtualId();
+    const { data, error } = await supabase
+      .from('receitas')
+      .select('*')
+      .eq('user_id', userId)
+      .order('data_recebimento', { ascending: false });
+    checarErro(error);
+    return (data || []).map((r) => normalizarNumeros(r, ['valor']));
+  },
+
+  async criarReceita(receita) {
+    const userId = await usuarioAtualId();
+    const { data, error } = await supabase
+      .from('receitas')
+      .insert({ ...receita, user_id: userId })
+      .select()
+      .single();
+    checarErro(error);
+    return data;
+  },
+
+  async excluirReceita(id) {
+    const userId = await usuarioAtualId();
+    const { error } = await supabase.from('receitas').delete().eq('id', id).eq('user_id', userId);
+    checarErro(error);
+  },
+
+  // ---------- Despesas ----------
+  async listarDespesas(params = {}) {
+    const userId = await usuarioAtualId();
+    let query = supabase.from('despesas').select('*').eq('user_id', userId);
+    if (params.status) query = query.eq('status', params.status);
+    if (params.categoria) query = query.eq('categoria', params.categoria);
+    const { data, error } = await query.order('data_vencimento', { ascending: true });
+    checarErro(error);
+    return (data || []).map((d) => normalizarNumeros(d, ['valor']));
+  },
+
+  async criarDespesa(despesa) {
+    const userId = await usuarioAtualId();
+    const { data, error } = await supabase
+      .from('despesas')
+      .insert({ ...despesa, user_id: userId })
+      .select()
+      .single();
+    checarErro(error);
+    return data;
+  },
+
+  async alternarStatusDespesa(id) {
+    const userId = await usuarioAtualId();
+    const { data: despesa, error: erroBusca } = await supabase
+      .from('despesas')
+      .select('status')
+      .eq('id', id)
+      .eq('user_id', userId)
+      .single();
+    checarErro(erroBusca);
+
+    const novoStatus = despesa.status === 'paga' ? 'pendente' : 'paga';
+    const { error } = await supabase
+      .from('despesas')
+      .update({ status: novoStatus })
+      .eq('id', id)
+      .eq('user_id', userId);
+    checarErro(error);
+  },
+
+  async excluirDespesa(id) {
+    const userId = await usuarioAtualId();
+    const { error } = await supabase.from('despesas').delete().eq('id', id).eq('user_id', userId);
+    checarErro(error);
+  },
+
+  // ---------- Planejamento do próximo salário ----------
+  async listarPlanejamentos() {
+    const userId = await usuarioAtualId();
+    const { data: planejamentos, error } = await supabase
+      .from('planejamento_proximo_salario')
+      .select('*')
+      .eq('user_id', userId)
+      .order('data_prevista', { ascending: true });
+    checarErro(error);
+
+    const resultado = await Promise.all(
+      (planejamentos || []).map(async (planejamento) => {
+        const { data: itens, error: erroItens } = await supabase
+          .from('planejamento_itens')
+          .select('*')
+          .eq('planejamento_id', planejamento.id);
+        checarErro(erroItens);
+        return montarResumoPlanejamento(planejamento, itens || []);
+      })
+    );
+    return resultado;
+  },
+
+  async criarPlanejamento(planejamento) {
+    const userId = await usuarioAtualId();
+    const { data, error } = await supabase
+      .from('planejamento_proximo_salario')
+      .insert({ ...planejamento, user_id: userId })
+      .select()
+      .single();
+    checarErro(error);
+    return data;
+  },
+
+  async adicionarItemPlanejamento(planejamentoId, item) {
+    const userId = await usuarioAtualId();
+    const { data, error } = await supabase
+      .from('planejamento_itens')
+      .insert({ ...item, planejamento_id: planejamentoId, user_id: userId })
+      .select()
+      .single();
+    checarErro(error);
+    return data;
+  },
+
+  async removerItemPlanejamento(planejamentoId, itemId) {
+    const { error } = await supabase
+      .from('planejamento_itens')
+      .delete()
+      .eq('id', itemId)
+      .eq('planejamento_id', planejamentoId);
+    checarErro(error);
+  },
+
+  async excluirPlanejamento(id) {
+    const userId = await usuarioAtualId();
+    await supabase.from('planejamento_itens').delete().eq('planejamento_id', id);
+    const { error } = await supabase
+      .from('planejamento_proximo_salario')
+      .delete()
+      .eq('id', id)
+      .eq('user_id', userId);
+    checarErro(error);
+  },
+
+  // ---------- Planejamento mensal ----------
+  async buscarPlanejamentoMensal(mes) {
+    const userId = await usuarioAtualId();
+    const { inicio, fim } = inicioFimMes(mes);
+    const hoje = new Date().toISOString().slice(0, 10);
+
+    const [{ data: receitas, error: erroR }, { data: despesas, error: erroD }] = await Promise.all([
+      supabase.from('receitas').select('*').eq('user_id', userId).gte('data_recebimento', inicio).lte('data_recebimento', fim),
+      supabase.from('despesas').select('*').eq('user_id', userId).gte('data_vencimento', inicio).lte('data_vencimento', fim),
+    ]);
+    checarErro(erroR);
+    checarErro(erroD);
+
+    const totalReceitas = (receitas || []).reduce((s, r) => s + Number(r.valor), 0);
+    const totalDespesas = (despesas || []).reduce((s, d) => s + Number(d.valor), 0);
+    const saldoProjetado = totalReceitas - totalDespesas;
+
+    const recebimentosFuturos = (receitas || []).filter((r) => r.data_recebimento >= hoje);
+    const contasFuturas = (despesas || []).filter((d) => d.status !== 'paga' && d.data_vencimento >= hoje);
+    const gastosRealizados = (despesas || []).filter((d) => d.status === 'paga');
+
+    return {
+      mes,
+      saldo_projetado: saldoProjetado,
+      recebimentos_futuros: recebimentosFuturos,
+      contas_futuras: contasFuturas,
+      gastos_realizados: gastosRealizados,
+    };
+  },
+
+  // ---------- Metas ----------
+  async listarMetas() {
+    const userId = await usuarioAtualId();
+    const { data, error } = await supabase
+      .from('metas')
+      .select('*')
+      .eq('user_id', userId)
+      .order('data_alvo', { ascending: true });
+    checarErro(error);
+    return (data || []).map((meta) => comProgresso(meta));
+  },
+
+  async criarMeta(meta) {
+    const userId = await usuarioAtualId();
+    const { data, error } = await supabase
+      .from('metas')
+      .insert({ ...meta, user_id: userId })
+      .select()
+      .single();
+    checarErro(error);
+    return data;
+  },
+
+  async atualizarMeta(id, patch) {
+    const userId = await usuarioAtualId();
+    const { data, error } = await supabase
+      .from('metas')
+      .update(patch)
+      .eq('id', id)
+      .eq('user_id', userId)
+      .select()
+      .single();
+    checarErro(error);
+    return data;
+  },
+
+  async excluirMeta(id) {
+    const userId = await usuarioAtualId();
+    const { error } = await supabase.from('metas').delete().eq('id', id).eq('user_id', userId);
+    checarErro(error);
   },
 };
 

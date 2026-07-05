@@ -43,8 +43,8 @@ export default function Dashboard() {
   }
 
   const proximasDespesas = dados.despesas_por_prioridade
-    .filter((d) => d.status !== 'paga')
-    .slice(0, 5);
+    ? dados.despesas_por_prioridade.filter((d) => d.status !== 'paga').slice(0, 5)
+    : [];
 
   return (
     <div className="dashboard">
@@ -58,6 +58,9 @@ export default function Dashboard() {
           saldoDisponivel={dados.saldo_disponivel}
           totalReceitas={dados.total_receitas}
           percentualComprometido={dados.percentual_comprometido}
+          saldoValeRefeicao={dados.saldo_vale_refeicao}
+          totalValeRefeicao={dados.total_receitas_vale_refeicao}
+          percentualComprometidoVale={dados.percentual_comprometido_vale_refeicao}
         />
 
         <div className="dashboard-mini-cards">
