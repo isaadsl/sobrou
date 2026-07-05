@@ -15,6 +15,7 @@ const FORM_VAZIO = {
   prioridade: 'media',
   status: 'pendente',
   observacoes: '',
+  destino: 'principal', // Adicionando o campo destino com valor padrão
 };
 
 export default function Despesas() {
@@ -202,6 +203,17 @@ export default function Despesas() {
               <option value="pendente">Pendente</option>
               <option value="paga">Paga</option>
             </select>
+          </div>
+
+          <div className="form-campo">
+            <label>Destino</label>
+            <select
+              value={form.destino}
+              onChange={(e) => setForm({ ...form, destino: e.target.value })}
+              >
+                <option value="principal">Saldo principal</option>
+                <option value="vale_refeicao">Vale Refeição</option>
+              </select>
           </div>
 
           <div className="form-acoes">
