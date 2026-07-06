@@ -41,7 +41,6 @@ function CalculoDePerfilEmSegundoPlano() {
 
   useEffect(() => {
     if (!autenticado || !usuario) return;
-    // Roda silenciosamente, sem bloquear a interface nem mostrar erros ao usuário
     calcularPerfilComportamental(usuario.id).catch(() => {});
   }, [autenticado, usuario]);
 
@@ -56,12 +55,7 @@ function ConteudoApp() {
     const tempo = setTimeout(() => setTempoMinimoPassou(true), 700);
     return () => clearTimeout(tempo);
   }, []);
-
-  // O BrowserRouter (e, com ele, o supabase-js) precisa estar montado desde
-  // o primeiro render para processar o token presente na URL de retorno —
-  // seja de login OAuth, confirmação de e-mail ou recuperação de senha. Por
-  // isso a splash screen é só uma camada visual sobreposta, em vez de
-  // substituir o app inteiro: a sessão é processada por baixo, em paralelo.
+  
   const mostrarSplash = carregando || !tempoMinimoPassou;
 
   return (
@@ -70,14 +64,14 @@ function ConteudoApp() {
       {mostrarSplash && <SplashScreen />}
       <div style={{ visibility: mostrarSplash ? 'hidden' : 'visible' }}>
         <Routes>
-          {/* Rotas públicas */}
+
           <Route path="/boas-vindas" element={<RotaPublica><BoasVindas /></RotaPublica>} />
           <Route path="/login" element={<RotaPublica><Login /></RotaPublica>} />
           <Route path="/cadastro" element={<RotaPublica><Cadastro /></RotaPublica>} />
           <Route path="/esqueci-senha" element={<RotaPublica><EsqueciSenha /></RotaPublica>} />
           <Route path="/redefinir-senha" element={<RedefinirSenha />} />
 
-          {/* Rotas protegidas (exigem login) */}
+        
           <Route path="/" element={<AreaAutenticada><Dashboard /></AreaAutenticada>} />
           <Route path="/receitas" element={<AreaAutenticada><Receitas /></AreaAutenticada>} />
           <Route path="/despesas" element={<AreaAutenticada><Despesas /></AreaAutenticada>} />
