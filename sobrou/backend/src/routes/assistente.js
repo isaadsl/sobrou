@@ -2,7 +2,7 @@ import { Router } from 'express';
 import fetch from 'node-fetch';
 
 const router = Router();
-const GROQ_API_KEY = process.env.GROQ_API_KEY; // coloque sua chave no .env
+const GROQ_API_KEY = process.env.GROQ_API_KEY;
 
 router.post('/perguntar', async (req, res) => {
   const { pergunta, contexto, perfilComportamental } = req.body;
@@ -25,7 +25,7 @@ router.post('/perguntar', async (req, res) => {
     });
 
     const data = await resposta.json();
-    console.log(JSON.stringify(data, null, 2)); // log para debug
+    console.log(JSON.stringify(data, null, 2));
 
     const texto = data.choices?.[0]?.message?.content || "Não consegui gerar resposta.";
     return res.json({ resposta: texto });
