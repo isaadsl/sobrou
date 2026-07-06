@@ -35,8 +35,6 @@ export default function Layout({ children }) {
             <span className="layout-marca-slogan">Visualize, planeje e economize.</span>
           </div>
         </div>
-
-        {/* Navegação completa — usada como está em telas grandes (desktop) */}
         <nav className="layout-nav layout-nav-desktop">
           {TODOS_ITENS.map((item) => (
             <NavLink
@@ -63,8 +61,6 @@ export default function Layout({ children }) {
       </aside>
 
       <main className="layout-conteudo">{children}</main>
-
-      {/* Barra de navegação inferior fixa — só aparece em mobile (ver CSS) */}
       <nav className="layout-nav-mobile">
         {ITENS_PRINCIPAIS.map((item) => (
           <NavLink
