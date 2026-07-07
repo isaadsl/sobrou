@@ -36,7 +36,7 @@ export default function Layout({ children }) {
           </div>
         </div>
 
-        {/* Navegação completa — usada como está em telas grandes (desktop) */}
+        {/* Desktop */}
         <nav className="layout-nav layout-nav-desktop">
           {TODOS_ITENS.map((item) => (
             <NavLink
@@ -64,7 +64,7 @@ export default function Layout({ children }) {
 
       <main className="layout-conteudo">{children}</main>
 
-      {/* Barra de navegação inferior fixa — só aparece em mobile (ver CSS) */}
+      {/* Barra de navegação mobile */}
       <nav className="layout-nav-mobile">
         {ITENS_PRINCIPAIS.map((item) => (
           <NavLink

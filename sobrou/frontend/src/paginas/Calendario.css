@@ -41,7 +41,7 @@
 }
 
 .calendario-celula {
-  aspect-ratio: 1;
+  min-height: 92px;
   background: var(--cor-superficie-alta);
   border-radius: var(--raio-sm);
   padding: 8px;
@@ -54,6 +54,7 @@
 .calendario-celula-vazia {
   background: none;
   border: none;
+  min-height: 92px;
 }
 
 .calendario-numero-dia {
@@ -64,19 +65,60 @@
 
 .calendario-eventos {
   display: flex;
-  flex-wrap: wrap;
-  gap: 2px;
-  font-size: 0.85rem;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.calendario-evento {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.68rem;
+  line-height: 1.2;
+  padding: 2px 4px;
+  border-radius: 4px;
+  background: var(--cor-superficie);
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.calendario-evento-icone {
+  flex-shrink: 0;
+  font-size: 0.72rem;
+}
+
+.calendario-evento-texto {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.calendario-evento-mais {
+  font-size: 0.65rem;
+  color: var(--texto-terciario);
+  padding: 0 4px;
+}
+
+.calendario-evento-paga {
+  opacity: 0.6;
+}
+
+.calendario-evento-proxima_vencimento .calendario-evento-texto {
+  color: var(--texto-primario);
 }
 
 @media (max-width: 700px) {
   .calendario-celula {
+    min-height: 76px;
     padding: 4px;
   }
   .calendario-numero-dia {
     font-size: 0.68rem;
   }
-  .calendario-eventos {
-    font-size: 0.7rem;
+  .calendario-evento {
+    font-size: 0.6rem;
+  }
+  .calendario-evento-icone {
+    font-size: 0.62rem;
   }
 }

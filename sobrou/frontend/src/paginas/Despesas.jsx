@@ -15,7 +15,7 @@ const FORM_VAZIO = {
   prioridade: 'media',
   status: 'pendente',
   observacoes: '',
-  destino: 'principal', // Adicionando o campo destino com valor padrão
+  destino: 'principal', 
 };
 
 export default function Despesas() {

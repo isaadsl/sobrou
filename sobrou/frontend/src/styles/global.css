@@ -1,19 +1,14 @@
-/* ============================================
-  Sobrou - Frontend
-  Arquivo: global.css
-  ============================================ */
-
 @import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 :root {
-  /* Cores base */
+ 
   --cor-fundo: #0a0a0b;
   --cor-superficie: #141416;
   --cor-superficie-alta: #1c1c1f;
   --cor-borda: #2a2a2e;
   --cor-borda-sutil: #1f1f22;
 
-  /* Vermelhos */
+
   --vermelho-vibrante: #ff3b3b;
   --vermelho-intenso: #e0202f;
   --vermelho-escuro: #6e0e18;
@@ -21,28 +16,28 @@
   --vermelho-glow: rgba(255, 59, 59, 0.35);
   --vermelho-glow-sutil: rgba(255, 59, 59, 0.12);
 
-  /* Estados */
+
   --verde-sucesso: #2dd4a7;
   --amarelo-alerta: #f2b94a;
   --vermelho-erro: #ff5c5c;
 
-  /* Texto */
+
   --texto-primario: #f5f5f7;
   --texto-secundario: #a3a3ab;
   --texto-terciario: #6b6b73;
 
-  /* Tipografia */
+
   --fonte-display: 'Manrope', sans-serif;
   --fonte-corpo: 'Inter', sans-serif;
   --fonte-mono: 'JetBrains Mono', monospace;
 
-  /* Espaçamento */
+
   --raio-sm: 10px;
   --raio-md: 16px;
   --raio-lg: 24px;
   --raio-pill: 999px;
 
-  /* Sombras */
+
   --sombra-card: 0 4px 24px rgba(0, 0, 0, 0.4);
   --sombra-glow-vermelho: 0 8px 32px var(--vermelho-glow-sutil);
 }
@@ -112,7 +107,7 @@ input, select, textarea {
   }
 }
 
-/* Utilitários numéricos (valores monetários) */
+
 .valor-monetario {
   font-family: var(--fonte-mono);
   font-weight: 600;

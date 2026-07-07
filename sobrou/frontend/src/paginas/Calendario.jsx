@@ -4,6 +4,8 @@ import { formatarMoeda, mesAtualIso, nomeMes } from '../utils/formatadores';
 import Card from '../components/Card';
 import './Calendario.css';
 
+const MAX_EVENTOS_VISIVEIS = 3;
+
 function gerarDiasDoMes(mesIso) {
   const [ano, mes] = mesIso.split('-').map(Number);
   const primeiroDia = new Date(ano, mes - 1, 1);
@@ -81,16 +83,26 @@ export default function Calendario() {
               if (!dataIso) return <div key={`vazio-${idx}`} className="calendario-celula calendario-celula-vazia" />;
               const numeroDia = Number(dataIso.split('-')[2]);
               const eventosDoDia = eventosPorDia[dataIso] || [];
+              const eventosVisiveis = eventosDoDia.slice(0, MAX_EVENTOS_VISIVEIS);
+              const eventosOcultos = eventosDoDia.length - eventosVisiveis.length;
 
               return (
                 <div key={dataIso} className="calendario-celula">
                   <span className="calendario-numero-dia">{numeroDia}</span>
                   <div className="calendario-eventos">
-                    {eventosDoDia.slice(0, 3).map((ev, i) => (
-                      <span key={i} className="calendario-evento" title={`${ev.descricao} · ${formatarMoeda(ev.valor)}`}>
-                        {ev.icone}
+                    {eventosVisiveis.map((ev, i) => (
+                      <span
+                        key={i}
+                        className={`calendario-evento calendario-evento-${ev.tipo}`}
+                        title={`${ev.descricao} · ${formatarMoeda(ev.valor)}`}
+                      >
+                        <span className="calendario-evento-icone">{ev.icone}</span>
+                        <span className="calendario-evento-texto">{ev.descricao}</span>
                       </span>
                     ))}
+                    {eventosOcultos > 0 && (
+                      <span className="calendario-evento-mais">+{eventosOcultos}</span>
+                    )}
                   </div>
                 </div>
               );

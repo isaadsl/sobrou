@@ -9,11 +9,11 @@ export default function CarteiraDigital({
   totalValeRefeicao = 0, 
   percentualComprometidoVale = 0 
 }) {
-  // Principal
+ 
   const percentualDisponivel = Math.max(0, 100 - percentualComprometido);
   const saldoNegativo = saldoDisponivel < 0;
 
-  // Vale refeição
+
   const percentualDisponivelVale = Math.max(0, 100 - percentualComprometidoVale);
   const saldoValeNegativo = saldoValeRefeicao < 0;
 

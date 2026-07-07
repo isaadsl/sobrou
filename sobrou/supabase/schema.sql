@@ -1,19 +1,7 @@
--- ============================================================
--- SOBROU — Schema do banco de dados (Supabase / PostgreSQL)
--- ============================================================
--- Como usar: Supabase Dashboard → SQL Editor → cole este arquivo
--- inteiro → Run. Pode rodar de novo sem problema (idempotente).
--- ============================================================
 
--- ------------------------------------------------------------
--- EXTENSÕES
--- ------------------------------------------------------------
 create extension if not exists "uuid-ossp";
 
--- ------------------------------------------------------------
--- PROFILES (perfil público de cada usuário)
--- Vinculado 1:1 a auth.users (tabela interna do Supabase Auth)
--- ------------------------------------------------------------
+
 create table if not exists public.profiles (
   id uuid primary key references auth.users(id) on delete cascade,
   nome text,
@@ -43,7 +31,7 @@ create policy "Usuário cria o próprio perfil"
   on public.profiles for insert
   with check (auth.uid() = id);
 
--- Cria o perfil automaticamente quando alguém se cadastra
+
 create or replace function public.handle_new_user()
 returns trigger as $$
 begin
@@ -63,9 +51,6 @@ create trigger on_auth_user_created
   after insert on auth.users
   for each row execute function public.handle_new_user();
 
--- ------------------------------------------------------------
--- RECEITAS
--- ------------------------------------------------------------
 create table if not exists public.receitas (
   id uuid primary key default uuid_generate_v4(),
   user_id uuid not null references auth.users(id) on delete cascade,
@@ -88,9 +73,7 @@ create policy "Usuário gerencia as próprias receitas"
 
 create index if not exists idx_receitas_user_data on public.receitas (user_id, data_recebimento);
 
--- ------------------------------------------------------------
--- DESPESAS
--- ------------------------------------------------------------
+
 create table if not exists public.despesas (
   id uuid primary key default uuid_generate_v4(),
   user_id uuid not null references auth.users(id) on delete cascade,
@@ -114,9 +97,7 @@ create policy "Usuário gerencia as próprias despesas"
 
 create index if not exists idx_despesas_user_data on public.despesas (user_id, data_vencimento);
 
--- ------------------------------------------------------------
--- METAS
--- ------------------------------------------------------------
+
 create table if not exists public.metas (
   id uuid primary key default uuid_generate_v4(),
   user_id uuid not null references auth.users(id) on delete cascade,
@@ -135,9 +116,7 @@ create policy "Usuário gerencia as próprias metas"
   using (auth.uid() = user_id)
   with check (auth.uid() = user_id);
 
--- ------------------------------------------------------------
--- PLANEJAMENTO DO PRÓXIMO SALÁRIO
--- ------------------------------------------------------------
+
 create table if not exists public.planejamento_proximo_salario (
   id uuid primary key default uuid_generate_v4(),
   user_id uuid not null references auth.users(id) on delete cascade,
@@ -173,9 +152,7 @@ create policy "Usuário gerencia os próprios itens de planejamento"
   using (auth.uid() = user_id)
   with check (auth.uid() = user_id);
 
--- ------------------------------------------------------------
--- CONVERSAS COM A IA (histórico do Assistente Financeiro)
--- ------------------------------------------------------------
+
 create table if not exists public.conversas_ia (
   id uuid primary key default uuid_generate_v4(),
   user_id uuid not null references auth.users(id) on delete cascade,
@@ -195,9 +172,7 @@ create policy "Usuário gerencia as próprias conversas"
 
 create index if not exists idx_conversas_user_data on public.conversas_ia (user_id, criado_em desc);
 
--- ------------------------------------------------------------
--- HISTÓRICO MENSAL (para relatórios e cálculo de perfil)
--- ------------------------------------------------------------
+
 create table if not exists public.historico_mensal (
   id uuid primary key default uuid_generate_v4(),
   user_id uuid not null references auth.users(id) on delete cascade,
@@ -216,6 +191,3 @@ create policy "Usuário gerencia o próprio histórico"
   using (auth.uid() = user_id)
   with check (auth.uid() = user_id);
 
--- ============================================================
--- FIM DO SCHEMA
--- ============================================================
