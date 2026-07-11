@@ -1,11 +1,4 @@
--- ============================================================
--- SOBROU — Schema do banco de dados (Supabase / PostgreSQL)
--- ============================================================
--- Como usar: Supabase Dashboard → SQL Editor → cole este arquivo
--- inteiro → Run. Pode rodar de novo sem problema (idempotente).
--- ============================================================
-
--- ------------------------------------------------------------
+ ------------------------------------------------------------
 -- EXTENSÕES
 -- ------------------------------------------------------------
 create extension if not exists "uuid-ossp";
@@ -215,7 +208,3 @@ create policy "Usuário gerencia o próprio histórico"
   on public.historico_mensal for all
   using (auth.uid() = user_id)
   with check (auth.uid() = user_id);
-
--- ============================================================
--- FIM DO SCHEMA
--- ============================================================
