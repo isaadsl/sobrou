@@ -55,7 +55,7 @@ export default function Relatorios() {
     nome,
     valor,
   }));
-
+  
   return (
     <div className="pagina-lista">
       <header className="pagina-cabecalho">

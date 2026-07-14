@@ -49,7 +49,7 @@ export default function Calendario() {
     if (!eventosPorDia[ev.data]) eventosPorDia[ev.data] = [];
     eventosPorDia[ev.data].push(ev);
   });
-
+  
   return (
     <div className="pagina-lista">
       <header className="pagina-cabecalho">

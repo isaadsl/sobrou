@@ -22,7 +22,7 @@
   gap: 10px;
   padding: 0 12px 28px;
   font-family: var(--fonte-display);
-  font-size: 1.15rem;
+  font-size: 27px;
 }
 
 .layout-marca-icone {
@@ -52,7 +52,7 @@
 
 .layout-marca-slogan {
   font-family: var(--fonte-corpo);
-  font-size: 0.66rem;
+  font-size: 10px;
   color: var(--texto-terciario);
   font-weight: 500;
   white-space: nowrap;
@@ -186,7 +186,7 @@
 
   .layout-marca-slogan {
     display: block;
-    font-size: 0.97rem;
+    font-size: 19px;
     color: var(--texto-terciario);
     font-weight: 500;
     margin-top:  2px;
