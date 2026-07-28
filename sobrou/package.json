@@ -1,5 +1,8 @@
 {
   "devDependencies": {
     "gh-pages": "^6.3.0"
+  },
+  "dependencies": {
+    "react-pluggy-connect": "^2.12.0"
   }
 }

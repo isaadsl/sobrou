@@ -22,6 +22,7 @@ import Calendario from './paginas/Calendario';
 import Relatorios from './paginas/Relatorios';
 import Metas from './paginas/Metas';
 import AssistenteIA from './paginas/AssistenteIA';
+import ContasBancarias from './paginas/ContasBancarias';
 import Perfil from './paginas/Perfil';
 import Sobre from './paginas/Sobre';
 
@@ -83,6 +84,7 @@ function ConteudoApp() {
           <Route path="/relatorios" element={<AreaAutenticada><Relatorios /></AreaAutenticada>} />
           <Route path="/metas" element={<AreaAutenticada><Metas /></AreaAutenticada>} />
           <Route path="/assistente" element={<AreaAutenticada><AssistenteIA /></AreaAutenticada>} />
+          <Route path="/contas-bancarias" element={<AreaAutenticada><ContasBancarias /></AreaAutenticada>} />
           <Route path="/perfil" element={<AreaAutenticada><Perfil /></AreaAutenticada>} />
           <Route path="/sobre" element={<AreaAutenticada><Sobre /></AreaAutenticada>} />
         </Routes>

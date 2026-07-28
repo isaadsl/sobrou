@@ -3,6 +3,8 @@ import cors from 'cors';
 import 'dotenv/config';
 
 import assistenteRoutes from './routes/assistente.js';
+import pluggyRoutes from './routes/pluggy.js';
+import importarExtratoRoutes from './routes/importarExtrato.js';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -23,6 +25,8 @@ app.get('/api/health', (req, res) => {
 
 
 app.use('/api/assistente', assistenteRoutes);
+app.use('/api/pluggy', pluggyRoutes);
+app.use('/api/importar', importarExtratoRoutes);
 
 
 app.use((err, req, res, next) => {

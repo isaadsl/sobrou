@@ -1,0 +1,52 @@
+.contas-acoes-cabecalho {
+  display: flex;
+  gap: 10px;
+}
+
+.contas-mensagem {
+  margin-bottom: 16px;
+}
+
+.contas-mensagem-sucesso {
+  background: var(--cor-superficie-alta);
+  border: 1px solid var(--cor-borda-sutil);
+  color: var(--texto-primario);
+  padding: 10px 14px;
+  border-radius: var(--raio-sm);
+  margin-bottom: 16px;
+  font-size: 0.85rem;
+}
+
+.contas-grade {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 16px;
+}
+
+.conta-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.conta-cabecalho {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.conta-instituicao {
+  font-weight: 600;
+}
+
+.conta-sincronizacao {
+  font-size: 0.78rem;
+  color: var(--texto-secundario);
+}
+
+@media (max-width: 700px) {
+  .contas-acoes-cabecalho {
+    flex-direction: column;
+    width: 100%;
+  }
+}

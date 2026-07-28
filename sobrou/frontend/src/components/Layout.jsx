@@ -16,6 +16,7 @@ const ITENS_SECUNDARIOS = [
   { caminho: '/calendario', rotulo: 'Calendário', icone: '▢' },
   { caminho: '/relatorios', rotulo: 'Relatórios', icone: '▤' },
   { caminho: '/metas', rotulo: 'Metas', icone: '◎' },
+  { caminho: '/contas-bancarias', rotulo: 'Contas Bancárias', icone: '🏦' },
 ];
 
 const TODOS_ITENS = [...ITENS_PRINCIPAIS.slice(0, -1), ...ITENS_SECUNDARIOS, ITENS_PRINCIPAIS[ITENS_PRINCIPAIS.length - 1]];
