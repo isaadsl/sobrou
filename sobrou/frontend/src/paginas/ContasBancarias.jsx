@@ -7,8 +7,10 @@ import { importarArquivoExtrato } from '../services/importarExtrato';
 import { formatarMoeda, formatarDataExtensa } from '../utils/formatadores';
 import '../styles/formularios.css';
 import './ContasBancarias.css';
+import { useAuth } from '../contexto/AuthContext';
 
 export default function ContasBancarias() {
+  const { carregando: carregandoAuth } = useAuth();
   const [contas, setContas] = useState([]);
   const [carregando, setCarregando] = useState(true);
   const [connectToken, setConnectToken] = useState(null);
@@ -20,9 +22,10 @@ export default function ContasBancarias() {
   const [mensagemSucesso, setMensagemSucesso] = useState('');
   const [sincronizandoId, setSincronizandoId] = useState(null);
 
-  useEffect(() => {
+   useEffect(() => {
+    if (carregandoAuth) return;
     carregarContas();
-  }, []);
+  }, [carregandoAuth]);
 
   async function carregarContas() {
     setCarregando(true);
@@ -153,12 +156,13 @@ export default function ContasBancarias() {
 
       {widgetAberto && connectToken && (
         <PluggyConnect
-          connectToken={connectToken}
-          onSuccess={aoConectarComSucesso}
-          onError={() => setMensagemErro('Falha na conexão com o banco.')}
-          onClose={() => setWidgetAberto(false)}
-        />
-      )}
+         connectToken={connectToken}
+        includeSandbox={true}
+        onSuccess={aoConectarComSucesso}
+        onError={() => setMensagemErro('Falha na conexão com o banco.')}
+        onClose={() => setWidgetAberto(false)}
+  />
+)}
 
       <Modal
         aberto={modalImportarAberto}

@@ -57,8 +57,31 @@ export async function buscarContas(itemId) {
 }
 
 export async function buscarTransacoes(accountId, { desde } = {}) {
-  const params = new URLSearchParams({ accountId, pageSize: '500' });
-  if (desde) params.set('from', desde);
-  const dados = await pluggyFetch(`/transactions?${params.toString()}`);
-  return dados.results || [];
+  const params = new URLSearchParams({ accountId });
+  if (desde) params.set('createdAtFrom', desde);
+
+  let dados = await pluggyFetch(`/v2/transactions?${params.toString()}`);
+  let todasTransacoes = dados.results || [];
+
+  while (dados.next) {
+    const apiKey = await obterApiKey();
+    const urlProximaPagina = dados.next.startsWith('http')
+      ? dados.next
+      : `${PLUGGY_BASE_URL}/v2/transactions${dados.next}`;
+
+    const resposta = await fetch(urlProximaPagina, {
+      headers: {
+        'Content-Type': 'application/json',
+        'X-API-KEY': apiKey,
+      },
+    });
+    if (!resposta.ok) {
+      const texto = await resposta.text();
+      throw new Error(`Pluggy respondeu com erro: ${resposta.status} ${texto}`);
+    }
+    dados = await resposta.json();
+    todasTransacoes = todasTransacoes.concat(dados.results || []);
+  }
+
+  return todasTransacoes;
 }
