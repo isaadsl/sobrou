@@ -21,6 +21,7 @@ import ProximoSalario from './paginas/ProximoSalario';
 import Calendario from './paginas/Calendario';
 import Relatorios from './paginas/Relatorios';
 import Metas from './paginas/Metas';
+import ContasBancarias from './paginas/ContasBancarias';
 import AssistenteIA from './paginas/AssistenteIA';
 import Perfil from './paginas/Perfil';
 import Sobre from './paginas/Sobre';
@@ -41,7 +42,6 @@ function CalculoDePerfilEmSegundoPlano() {
 
   useEffect(() => {
     if (!autenticado || !usuario) return;
-    // Roda silenciosamente, sem bloquear a interface nem mostrar erros ao usuário
     calcularPerfilComportamental(usuario.id).catch(() => {});
   }, [autenticado, usuario]);
 
@@ -57,11 +57,6 @@ function ConteudoApp() {
     return () => clearTimeout(tempo);
   }, []);
 
-  // O BrowserRouter (e, com ele, o supabase-js) precisa estar montado desde
-  // o primeiro render para processar o token presente na URL de retorno —
-  // seja de login OAuth, confirmação de e-mail ou recuperação de senha. Por
-  // isso a splash screen é só uma camada visual sobreposta, em vez de
-  // substituir o app inteiro: a sessão é processada por baixo, em paralelo.
   const mostrarSplash = carregando || !tempoMinimoPassou;
 
   return (
@@ -86,6 +81,7 @@ function ConteudoApp() {
           <Route path="/calendario" element={<AreaAutenticada><Calendario /></AreaAutenticada>} />
           <Route path="/relatorios" element={<AreaAutenticada><Relatorios /></AreaAutenticada>} />
           <Route path="/metas" element={<AreaAutenticada><Metas /></AreaAutenticada>} />
+          <Route path="/contas-bancarias" element={<AreaAutenticada><ContasBancarias /></AreaAutenticada>} />
           <Route path="/assistente" element={<AreaAutenticada><AssistenteIA /></AreaAutenticada>} />
           <Route path="/perfil" element={<AreaAutenticada><Perfil /></AreaAutenticada>} />
           <Route path="/sobre" element={<AreaAutenticada><Sobre /></AreaAutenticada>} />

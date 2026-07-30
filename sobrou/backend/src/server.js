@@ -3,6 +3,8 @@ import cors from 'cors';
 import 'dotenv/config';
 
 import assistenteRoutes from './routes/assistente.js';
+import pluggyRoutes from './routes/pluggy.js';
+import importarExtratoRoutes from './routes/importarExtrato.js';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -16,20 +18,18 @@ const origensPermitidas = [
 app.use(cors({ origin: origensPermitidas }));
 app.use(express.json());
 
-
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', ia_configurada: !!process.env.GROQ_API_KEY });
 });
 
-
 app.use('/api/assistente', assistenteRoutes);
-
+app.use('/api/pluggy', pluggyRoutes);
+app.use('/api/importar', importarExtratoRoutes);
 
 app.use((err, req, res, next) => {
   console.error('Erro inesperado:', err);
   res.status(500).json({ erro: 'Erro interno do servidor' });
 });
-
 
 app.listen(PORT, () => {
   console.log(`Servidor rodando na porta ${PORT}`);
