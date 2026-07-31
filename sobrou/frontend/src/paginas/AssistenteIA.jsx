@@ -8,8 +8,8 @@ import './AssistenteIA.css';
 
 const SUGESTOES = [
   'Quanto eu gastei este mês?',
-  'Posso comprar algo de R$ 300?',
-  'Quanto posso gastar até o próximo salário?',
+  'Como posso investir com o meu salário?',
+  'Como posso economizar mais dinheiro?',
   'Qual categoria está consumindo mais dinheiro?',
 ];
 
@@ -38,7 +38,7 @@ export default function AssistenteIA() {
         conversas.map((c) => ({ pergunta: c.pergunta, resposta: c.resposta, id: c.id }))
       );
     } catch {
-      // Histórico vazio ou tabela ainda não populada — segue normalmente
+    
     } finally {
       setCarregandoHistorico(false);
     }

@@ -14,7 +14,7 @@ const FORM_VAZIO = {
   data_recebimento: '',
   tipo: 'Salário',
   observacoes: '',
-  destino: 'principal', // Adicionando o campo destino com valor padrão
+  destino: 'principal', 
 };
 
 export default function Receitas() {

@@ -1,5 +1,11 @@
 import supabaseAdmin from './supabaseAdmin.js';
 
+/**
+ * Converte uma lista de transações genéricas ({ data, descricao, valor, externalId })
+ * no modelo já usado pelo app (receitas para valores >= 0, despesas para valores < 0)
+ * e grava no Supabase, ignorando duplicados via (user_id, origem, external_id).
+ */
+
 // Mapeamento de palavras-chave (em maiúsculas) para categorias.
 // A ordem importa: a primeira categoria com palavra-chave encontrada na
 // descrição é usada. Ajuste/adicione palavras conforme forem aparecendo

@@ -13,7 +13,7 @@ export default function Metas() {
   const [metas, setMetas] = useState([]);
   const [carregando, setCarregando] = useState(true);
   const [modalAberto, setModalAberto] = useState(false);
-  const [modalAporteAberto, setModalAporteAberto] = useState(null); // meta selecionada
+  const [modalAporteAberto, setModalAporteAberto] = useState(null);
   const [valorAporte, setValorAporte] = useState('');
   const [form, setForm] = useState(FORM_VAZIO);
   const [salvando, setSalvando] = useState(false);

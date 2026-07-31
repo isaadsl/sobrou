@@ -72,7 +72,7 @@ export const api = {
     const despesasPrincipal = despesas.filter((d) => (d.destino || 'principal') === "principal");
     const despesasVale = despesas.filter((d) => d.destino === "vale_refeicao");
 
-    // Totais gerais do painel = apenas o destino "principal" (vale refeição fica separado)
+    
     const totalReceitas = receitasPrincipal.reduce((soma, r) => soma + Number(r.valor), 0);
     const totalDespesas = despesasPrincipal.reduce((soma, d) => soma + Number(d.valor), 0);
     const despesasPagas = despesasPrincipal.filter((d) => d.status === 'paga').reduce((soma, d) => soma + Number(d.valor), 0);
@@ -195,7 +195,7 @@ export const api = {
     return data;
   },
 
-  // ---------- Receitas ----------
+ 
   async listarReceitas() {
     const userId = await usuarioAtualId();
     const { data, error } = await supabase
@@ -224,7 +224,7 @@ export const api = {
     checarErro(error);
   },
 
-  // ---------- Despesas ----------
+  
   async listarDespesas(params = {}) {
     const userId = await usuarioAtualId();
     let query = supabase.from('despesas').select('*').eq('user_id', userId);
@@ -271,7 +271,7 @@ export const api = {
     checarErro(error);
   },
 
-  // ---------- Planejamento do próximo salário ----------
+  
   async listarPlanejamentos() {
     const userId = await usuarioAtualId();
     const { data: planejamentos, error } = await supabase
@@ -336,24 +336,51 @@ export const api = {
     checarErro(error);
   },
 
-  // ---------- Planejamento mensal ----------
+  
   async buscarPlanejamentoMensal(mes) {
     const userId = await usuarioAtualId();
     const { inicio, fim } = inicioFimMes(mes);
     const hoje = new Date().toISOString().slice(0, 10);
 
-    const [{ data: receitas, error: erroR }, { data: despesas, error: erroD }] = await Promise.all([
+    const [
+      { data: receitas, error: erroR },
+      { data: despesas, error: erroD },
+      { data: planejamentosSalario, error: erroP },
+    ] = await Promise.all([
       supabase.from('receitas').select('*').eq('user_id', userId).gte('data_recebimento', inicio).lte('data_recebimento', fim),
       supabase.from('despesas').select('*').eq('user_id', userId).gte('data_vencimento', inicio).lte('data_vencimento', fim),
+      supabase.from('planejamento_proximo_salario').select('*').eq('user_id', userId).gte('data_prevista', inicio).lte('data_prevista', fim),
     ]);
     checarErro(erroR);
     checarErro(erroD);
+    checarErro(erroP);
 
     const totalReceitas = (receitas || []).reduce((s, r) => s + Number(r.valor), 0);
     const totalDespesas = (despesas || []).reduce((s, d) => s + Number(d.valor), 0);
     const saldoProjetado = totalReceitas - totalDespesas;
 
-    const recebimentosFuturos = (receitas || []).filter((r) => r.data_recebimento >= hoje);
+    const recebimentosDeReceitas = (receitas || [])
+      .filter((r) => r.data_recebimento >= hoje)
+      .map((r) => ({
+        id: `receita-${r.id}`,
+        nome: r.nome,
+        data_recebimento: r.data_recebimento,
+        valor: Number(r.valor),
+      }));
+
+    const recebimentosDePlanejamentos = (planejamentosSalario || [])
+      .filter((p) => p.data_prevista >= hoje)
+      .map((p) => ({
+        id: `planejamento-${p.id}`,
+        nome: p.observacoes?.trim() || 'Próximo salário',
+        data_recebimento: p.data_prevista,
+        valor: Number(p.valor_previsto),
+      }));
+
+    const recebimentosFuturos = [...recebimentosDeReceitas, ...recebimentosDePlanejamentos].sort(
+      (a, b) => a.data_recebimento.localeCompare(b.data_recebimento)
+    );
+
     const contasFuturas = (despesas || []).filter((d) => d.status !== 'paga' && d.data_vencimento >= hoje);
     const gastosRealizados = (despesas || []).filter((d) => d.status === 'paga');
 
@@ -366,7 +393,7 @@ export const api = {
     };
   },
 
-  // ---------- Metas ----------
+  
   async listarMetas() {
     const userId = await usuarioAtualId();
     const { data, error } = await supabase

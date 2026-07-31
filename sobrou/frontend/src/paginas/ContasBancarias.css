@@ -49,3 +49,10 @@
   color: #9ca3af;
   margin: 0;
 }
+
+@media (max-width: 700px) {
+  .contas-acoes-cabecalho {
+    flex-direction: column;
+    width: 100%;
+  }
+}

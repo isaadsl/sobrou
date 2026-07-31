@@ -7,7 +7,8 @@ const supabaseAuth = createClient(
   process.env.SUPABASE_ANON_KEY
 );
 
-// Client "service_role" — usado para operações administrativas no backend
+// Client "service_role" — usado para operações administrativas no backend,
+// já que o próprio backend garante quem é o usuário via exigirUsuario/usuarioIdDoToken
 const supabaseAdmin = createClient(
   process.env.SUPABASE_URL,
   process.env.SUPABASE_SERVICE_ROLE_KEY
