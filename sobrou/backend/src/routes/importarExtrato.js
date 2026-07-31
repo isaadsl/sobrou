@@ -5,7 +5,7 @@ import * as XLSX from 'xlsx';
 import crypto from 'crypto';
 import { exigirUsuario } from '../middleware/auth.js';
 import { salvarTransacoes } from '../services/transacoesService.js';
-import { parseOfx } from '../services/parsers/ofx.js';
+import { parsearOfx } from '../services/parsers/ofx.js';
 
 const router = Router();
 const upload = multer({ storage: multer.memoryStorage(), limits: { fileSize: 5 * 1024 * 1024 } });
@@ -51,7 +51,7 @@ router.post('/extrato', exigirUsuario, upload.single('arquivo'), async (req, res
 
   try {
     if (nomeArquivo.endsWith('.ofx')) {
-      transacoes = parseOfx(req.file.buffer.toString('utf-8'));
+      transacoes = parsearOfx(req.file.buffer.toString('utf-8'));
       origem = 'ofx';
     } else if (nomeArquivo.endsWith('.csv')) {
       transacoes = parseCsv(req.file.buffer);
