@@ -1,5 +1,4 @@
 import { supabase } from './supabaseClient';
-import { parsearOfx } from '../services/parsers/ofx.js';
 
 const URL_BASE_API = import.meta.env.VITE_API_URL || '';
 
