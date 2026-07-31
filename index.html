@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sobrou — Visualize, planeje e economize</title>
+    <script type="module" crossorigin src="/sobrou/assets/index-Rbo_8vL5.js"></script>
+    <link rel="stylesheet" crossorigin href="/sobrou/assets/index-CMHZSyCt.css">
+  </head>
+  <body>
+    <div id="root"></div>
+    <script>
+      
+      (function () {
+        var rotaSalva = sessionStorage.getItem('sobrou:redirecionar_para');
+        if (rotaSalva) {
+          sessionStorage.removeItem('sobrou:redirecionar_para');
+          var caminhoBase = '/sobrou/';
+          window.history.replaceState(null, '', caminhoBase + rotaSalva);
+        }
+      })();
+    </script>
+  </body>
+</html>
