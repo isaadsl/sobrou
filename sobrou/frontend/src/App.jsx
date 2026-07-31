@@ -65,14 +65,12 @@ function ConteudoApp() {
       {mostrarSplash && <SplashScreen />}
       <div style={{ visibility: mostrarSplash ? 'hidden' : 'visible' }}>
         <Routes>
-          {/* Rotas públicas */}
           <Route path="/boas-vindas" element={<RotaPublica><BoasVindas /></RotaPublica>} />
           <Route path="/login" element={<RotaPublica><Login /></RotaPublica>} />
           <Route path="/cadastro" element={<RotaPublica><Cadastro /></RotaPublica>} />
           <Route path="/esqueci-senha" element={<RotaPublica><EsqueciSenha /></RotaPublica>} />
           <Route path="/redefinir-senha" element={<RedefinirSenha />} />
 
-          {/* Rotas protegidas (exigem login) */}
           <Route path="/" element={<AreaAutenticada><Dashboard /></AreaAutenticada>} />
           <Route path="/receitas" element={<AreaAutenticada><Receitas /></AreaAutenticada>} />
           <Route path="/despesas" element={<AreaAutenticada><Despesas /></AreaAutenticada>} />
