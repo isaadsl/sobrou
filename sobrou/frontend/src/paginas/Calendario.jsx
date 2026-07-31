@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
 import { api } from '../services/api';
-import { formatarMoeda, mesAtualIso, nomeMes } from '../utils/formatadores';
+import { formatarMoeda, formatarDataExtensa, mesAtualIso, nomeMes } from '../utils/formatadores';
 import Card from '../components/Card';
+import Modal from '../components/Modal';
 import './Calendario.css';
 
 function gerarDiasDoMes(mesIso) {
@@ -23,6 +24,7 @@ export default function Calendario() {
   const [mes, setMes] = useState(mesAtualIso());
   const [eventos, setEventos] = useState([]);
   const [carregando, setCarregando] = useState(true);
+  const [diaSelecionado, setDiaSelecionado] = useState(null);
 
   useEffect(() => {
     carregar();
@@ -83,14 +85,22 @@ export default function Calendario() {
               const eventosDoDia = eventosPorDia[dataIso] || [];
 
               return (
-                <div key={dataIso} className="calendario-celula">
+                <div
+                  key={dataIso}
+                  className="calendario-celula calendario-celula-clicavel"
+                  onClick={() => eventosDoDia.length > 0 && setDiaSelecionado({ data: dataIso, eventos: eventosDoDia })}
+                >
                   <span className="calendario-numero-dia">{numeroDia}</span>
                   <div className="calendario-eventos">
                     {eventosDoDia.slice(0, 3).map((ev, i) => (
                       <span key={i} className="calendario-evento" title={`${ev.descricao} · ${formatarMoeda(ev.valor)}`}>
-                        {ev.icone}
+                        <span className="calendario-evento-icone">{ev.icone}</span>
+                        <span className="calendario-evento-texto">{ev.descricao}</span>
                       </span>
                     ))}
+                    {eventosDoDia.length > 3 && (
+                      <span className="calendario-evento-mais">+{eventosDoDia.length - 3}</span>
+                    )}
                   </div>
                 </div>
               );
@@ -98,6 +108,24 @@ export default function Calendario() {
           </div>
         )}
       </Card>
+
+      <Modal
+        aberto={!!diaSelecionado}
+        titulo={diaSelecionado ? formatarDataExtensa(diaSelecionado.data) : ''}
+        onFechar={() => setDiaSelecionado(null)}
+      >
+        <div className="calendario-modal-lista">
+          {diaSelecionado?.eventos.map((ev, i) => (
+            <div key={i} className="calendario-modal-item">
+              <span className="calendario-modal-icone">{ev.icone}</span>
+              <div className="calendario-modal-info">
+                <span className="calendario-modal-descricao">{ev.descricao}</span>
+                <span className="calendario-modal-valor">{formatarMoeda(ev.valor)}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </Modal>
     </div>
   );
 }

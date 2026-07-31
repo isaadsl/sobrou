@@ -41,7 +41,7 @@
 }
 
 .calendario-celula {
-  aspect-ratio: 1;
+  min-height: 90px;
   background: var(--cor-superficie-alta);
   border-radius: var(--raio-sm);
   padding: 8px;
@@ -49,11 +49,23 @@
   flex-direction: column;
   gap: 4px;
   border: 1px solid var(--cor-borda-sutil);
+  overflow: hidden;
 }
 
 .calendario-celula-vazia {
   background: none;
   border: none;
+  min-height: 90px;
+}
+
+.calendario-celula-clicavel {
+  cursor: pointer;
+  transition: transform 0.15s ease, border-color 0.15s ease;
+}
+
+.calendario-celula-clicavel:hover {
+  transform: translateY(-2px);
+  border-color: var(--cor-primaria, #ff3b3b);
 }
 
 .calendario-numero-dia {
@@ -64,19 +76,145 @@
 
 .calendario-eventos {
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   gap: 2px;
-  font-size: 0.85rem;
+  overflow: hidden;
+}
+
+.calendario-evento {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.68rem;
+  line-height: 1.2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.calendario-evento-icone {
+  flex-shrink: 0;
+}
+
+.calendario-evento-texto {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.calendario-evento-mais {
+  font-size: 0.66rem;
+  color: var(--texto-terciario);
+  font-weight: 600;
+}
+
+.calendario-modal-lista {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  animation: calendario-modal-entrada 0.2s ease;
+}
+
+.calendario-modal-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: var(--cor-superficie-alta);
+  border-radius: var(--raio-sm);
+  border: 1px solid var(--cor-borda-sutil);
+}
+
+.calendario-modal-icone {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+}
+
+.calendario-modal-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  overflow: hidden;
+}
+
+.calendario-modal-descricao {
+  font-size: 0.9rem;
+  color: var(--texto-primario, #f1f1f1);
+  white-space: normal;
+  word-break: break-word;
+}
+
+.calendario-modal-valor {
+  font-size: 0.8rem;
+  color: var(--texto-secundario);
+  font-weight: 600;
+}
+
+@keyframes calendario-modal-entrada {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @media (max-width: 700px) {
   .calendario-celula {
+    aspect-ratio: 1;
+    min-height: 0;
     padding: 4px;
+    gap: 2px;
   }
+
+  .calendario-celula-vazia {
+    aspect-ratio: 1;
+    min-height: 0;
+  }
+
   .calendario-numero-dia {
-    font-size: 0.68rem;
+    font-size: 0.66rem;
   }
+
+  .calendario-evento-texto {
+    display: none;
+  }
+
+  .calendario-evento {
+    font-size: 0.9rem;
+    gap: 0;
+    justify-content: center;
+  }
+
   .calendario-eventos {
-    font-size: 0.7rem;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: center;
+    gap: 2px;
+    flex: 1;
+  }
+
+  .calendario-evento-mais {
+    font-size: 0.58rem;
+  }
+
+  .calendario-legenda {
+    font-size: 0.72rem;
+    gap: 10px;
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+  }
+
+  .calendario-grade {
+    gap: 4px;
+  }
+
+  .calendario-dia-semana {
+    font-size: 0.62rem;
+    padding-bottom: 4px;
   }
 }
