@@ -54,6 +54,15 @@ export const api = {
     checarErro(error);
     return data;
   },
+       async buscarSaldoContas() {
+    const userId = await usuarioAtualId();
+    const { data, error } = await supabase
+      .from('contas_bancarias')
+      .select('*')
+      .eq('user_id', userId);
+    checarErro(error);
+    return (data || []).map((c) => normalizarNumeros(c, ['saldo']));
+  },
 
   async buscarDashboard(mes) {
     const userId = await usuarioAtualId();
