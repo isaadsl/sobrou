@@ -1,7 +1,3 @@
-<<<<<<< HEAD
-=======
-
->>>>>>> gh-pages
 logs
 *.log
 npm-debug.log*
@@ -16,11 +12,6 @@ dist-ssr
 *.local
 .env
 
-<<<<<<< HEAD
-=======
-
->>>>>>> gh-pages
-.vscode/*
 !.vscode/extensions.json
 .idea
 .DS_Store
