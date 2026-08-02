@@ -42,3 +42,7 @@ export async function sincronizarConta(contaId) {
 export async function listarContasBancarias() {
   return chamarApi('/contas');
 }
+
+export async function removerContaBancaria(contaId) {
+  return chamarApi(`/contas/${contaId}`, { method: 'DELETE' });
+}

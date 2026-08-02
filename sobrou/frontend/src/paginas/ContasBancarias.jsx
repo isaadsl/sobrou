@@ -2,7 +2,13 @@ import { useEffect, useState } from 'react';
 import { PluggyConnect } from 'react-pluggy-connect';
 import Card from '../components/Card';
 import Modal from '../components/Modal';
-import { obterConnectToken, conectarConta, sincronizarConta, listarContasBancarias } from '../services/pluggy';
+import {
+  obterConnectToken,
+  conectarConta,
+  sincronizarConta,
+  listarContasBancarias,
+  removerContaBancaria,
+} from '../services/pluggy';
 import { importarArquivoExtrato } from '../services/importarExtrato';
 import { formatarMoeda, formatarDataExtensa } from '../utils/formatadores';
 import { useAuth } from '../contexto/AuthContext';
@@ -21,6 +27,7 @@ export default function ContasBancarias() {
   const [mensagemErro, setMensagemErro] = useState('');
   const [mensagemSucesso, setMensagemSucesso] = useState('');
   const [sincronizandoId, setSincronizandoId] = useState(null);
+  const [removendoId, setRemovendoId] = useState(null);
 
   useEffect(() => {
     if (carregandoAuth) return;
@@ -75,6 +82,23 @@ export default function ContasBancarias() {
       setMensagemErro('Falha ao sincronizar. Tente novamente em instantes.');
     } finally {
       setSincronizandoId(null);
+    }
+  }
+
+  async function removerConta(contaId) {
+    const confirmar = window.confirm('Tem certeza que deseja remover essa conta sincronizada?');
+    if (!confirmar) return;
+
+    setMensagemErro('');
+    setRemovendoId(contaId);
+    try {
+      await removerContaBancaria(contaId);
+      setMensagemSucesso('Conta removida com sucesso.');
+      await carregarContas();
+    } catch {
+      setMensagemErro('Falha ao remover a conta. Tente novamente.');
+    } finally {
+      setRemovendoId(null);
     }
   }
 
@@ -133,6 +157,15 @@ export default function ContasBancarias() {
         <div className="contas-grade">
           {contas.map((conta) => (
             <Card key={conta.id} className="conta-card">
+              <button
+                className="conta-botao-remover"
+                onClick={() => removerConta(conta.id)}
+                disabled={removendoId === conta.id}
+                aria-label="Remover conta"
+                title="Remover conta"
+              >
+                {removendoId === conta.id ? '...' : '✕'}
+              </button>
               <div className="conta-cabecalho">
                 <span className="conta-instituicao">{conta.instituicao}</span>
                 <span className="valor-monetario">{formatarMoeda(conta.saldo)}</span>

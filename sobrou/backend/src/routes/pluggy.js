@@ -121,4 +121,29 @@ router.get('/contas', exigirUsuario, async (req, res) => {
   res.json(data || []);
 });
 
+router.delete('/contas/:contaId', exigirUsuario, async (req, res) => {
+  const { contaId } = req.params;
+  try {
+    const { data: conta, error: erroConta } = await supabaseAdmin
+      .from('contas_bancarias')
+      .select('id')
+      .eq('id', contaId)
+      .eq('user_id', req.userId)
+      .single();
+    if (erroConta || !conta) return res.status(404).json({ erro: 'Conta bancária não encontrada.' });
+
+    const { error } = await supabaseAdmin
+      .from('contas_bancarias')
+      .delete()
+      .eq('id', contaId)
+      .eq('user_id', req.userId);
+    if (error) throw new Error(error.message);
+
+    res.json({ sucesso: true });
+  } catch (erro) {
+    console.error('Erro ao remover conta bancária:', erro);
+    res.status(500).json({ erro: 'Falha ao remover a conta bancária.' });
+  }
+});
+
 export default router;

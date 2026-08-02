@@ -66,25 +66,9 @@ export default function Dashboard() {
         <p>{nomeMes(mes)}</p>
       </header>
 
-      {contasBancarias.length > 0 && (
-        <Card titulo="Saldo total das contas conectadas">
-          <span className="mini-card-valor valor-monetario cor-positiva">
-            {formatarMoeda(saldoTotalContas)}
-          </span>
-          <ul className="dashboard-lista-contas">
-            {contasBancarias.map((conta) => (
-              <li key={conta.id} className="dashboard-item-conta">
-                <span>{conta.instituicao}</span>
-                <span className="valor-monetario">{formatarMoeda(conta.saldo)}</span>
-              </li>
-            ))}
-          </ul>
-        </Card>
-      )}
-
       <div className="dashboard-grade-principal">
         <CarteiraDigital
-          saldoDisponivel={dados.saldo_disponivel}
+          saldoDisponivel={dados.saldo_disponivel + saldoTotalContas}
           totalReceitas={dados.total_receitas}
           percentualComprometido={dados.percentual_comprometido}
           saldoValeRefeicao={dados.saldo_vale_refeicao}
