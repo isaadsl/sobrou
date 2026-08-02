@@ -51,12 +51,6 @@ export default function Dashboard() {
     ? dados.despesas_por_prioridade.filter((d) => d.status !== 'paga').slice(0, 5)
     : [];
 
-  const categorias = dados.gastos_por_categoria
-    ? Object.entries(dados.gastos_por_categoria)
-        .filter(([, valor]) => valor > 0)
-        .sort((a, b) => b[1] - a[1])
-    : [];
-  const totalCategorias = categorias.reduce((soma, [, valor]) => soma + valor, 0);
   const saldoTotalContas = contasBancarias.reduce((soma, c) => soma + Number(c.saldo || 0), 0);
 
   return (
@@ -104,33 +98,6 @@ export default function Dashboard() {
           <span>{formatarMoeda(dados.despesas_pagas)} já pago</span>
           <span>{formatarMoeda(dados.despesas_pendentes)} pendente</span>
         </div>
-      </Card>
-
-      <Card titulo="Gastos por categoria">
-        {categorias.length === 0 ? (
-          <p className="dashboard-vazio">Nenhum gasto categorizado este mês ainda.</p>
-        ) : (
-          <ul className="dashboard-lista-categorias">
-            {categorias.map(([categoria, valor]) => {
-              const percentual = totalCategorias > 0 ? Math.round((valor / totalCategorias) * 100) : 0;
-              return (
-                <li key={categoria} className="dashboard-item-categoria">
-                  <div className="dashboard-item-categoria-topo">
-                    <span className="dashboard-item-categoria-nome">{categoria}</span>
-                    <span className="valor-monetario">{formatarMoeda(valor)}</span>
-                  </div>
-                  <div className="dashboard-item-categoria-barra-fundo">
-                    <div
-                      className="dashboard-item-categoria-barra-preenchida"
-                      style={{ width: `${percentual}%` }}
-                    />
-                  </div>
-                  <span className="dashboard-item-categoria-percentual">{percentual}% do total gasto</span>
-                </li>
-              );
-            })}
-          </ul>
-        )}
       </Card>
 
       <Card titulo="Próximas contas por prioridade">
